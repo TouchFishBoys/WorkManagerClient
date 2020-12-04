@@ -1,5 +1,7 @@
 # work_manager_client
 
+![workflow badge](https://github.com/TouchFishBoys/WorkManagerClient/workflows/Node.js%20CI/badge.svg)
+
 ## Project setup
 ```
 npm install
