@@ -74,8 +74,8 @@
           <el-table-column prop="name" label="姓名" width="120">
           </el-table-column>
           <el-table-column prop="address" label="地址"> </el-table-column>
-          <p v-for="item in cols" :key="1">
-            <el-table-column prop="date" :label="item" width="140">
+          <p v-for="(index, header) in tableHeader" :key="index">
+            <el-table-column prop="date" :label="header" width="140">
             </el-table-column>
           </p>
         </el-table>
@@ -94,7 +94,8 @@ export default {
       },
       cols = ["日期", "姓名", "地址"];
     return {
-      tableData: Array(20).fill(item)
+      tableData: Array(20).fill(item),
+      tableHeader: Array(3).fill(cols)
     };
   }
 };
