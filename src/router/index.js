@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../components/Login.vue";
 import Upload from "../components/Upload.vue";
+import FileList from "../components/FileList.vue";
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/upload",
     name: "Upload",
     component: Upload
+  },
+  {
+    path: "/filelist",
+    name: "FileList",
+    component: FileList
   },
   {
     path: "/about",
