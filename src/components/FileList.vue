@@ -1,123 +1,48 @@
 <template>
-  <el-container style="height: 500px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <div>
-        <el-switch
-          style="display: block"
-          v-model="form"
-          active-color="#13ce66"
-          inactive-color="#13b9ce"
-          :active-text="switchText1"
-          :inactive-text="switchText2"
-        >
-        </el-switch>
-      </div>
-      <el-tree
-        :data="menu"
-        :props="defaultProps"
-        accordion
-        @node-click="handleClickMenu"
-      ></el-tree>
-    </el-aside>
-
-    <el-container>
-      <el-main>
-        <el-table :data="tableData">
-          <el-table-column
-            v-for="header in tableHeader"
-            :key="header.key"
-            :property="header.key"
-            :label="header.col"
-            width="140"
-          >
-          </el-table-column>
-          <el-table-column fixed="right" label="操作" width="100">
-            <template slot-scope="scope">
-              <el-button
-                @click="handleDownLoad(scope.row)"
-                type="text"
-                size="small"
-                >下载</el-button
-              >
-              <el-button
-                @click="handlePoint(scope.row)"
-                type="text"
-                size="small"
-                >评分</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-main>
-    </el-container>
-  </el-container>
+  <el-menu
+    default-active="2"
+    class="el-menu-vertical-demo"
+    @open="handleOpen"
+    @close="handleClose"
+  >
+    <el-submenu index="1">
+      <template slot="title">
+        <span>导航一</span>
+      </template>
+      <el-menu-item-group>
+        <template slot="title">分组一</template>
+        <el-menu-item index="1-1">选项1</el-menu-item>
+        <el-menu-item index="1-2">选项2</el-menu-item>
+      </el-menu-item-group>
+      <el-menu-item-group title="分组2">
+        <el-menu-item index="1-3">选项3</el-menu-item>
+      </el-menu-item-group>
+      <el-submenu index="1-4">
+        <template slot="title">选项4</template>
+        <el-menu-item index="1-4-1">选项1</el-menu-item>
+      </el-submenu>
+    </el-submenu>
+    <el-menu-item index="2">
+      <span slot="title">导航二</span>
+    </el-menu-item>
+    <el-menu-item index="3" disabled>
+      <span slot="title">导航三</span>
+    </el-menu-item>
+    <el-menu-item index="4">
+      <span slot="title">导航四</span>
+    </el-menu-item>
+  </el-menu>
 </template>
-
 <script>
 export default {
-  data() {
-    const item = {
-        date: "2016-05-02",
-        name: "edf",
-        address: "sad"
-      },
-      MenuData = [
-        {
-          label: "一级 1",
-          children: [
-            {
-              label: "二级 1-1",
-              children: [
-                {
-                  label: "三级 1-1-1"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      form = 0,
-      switchText1 = "按题目查找",
-      switchText2 = "按学生查找",
-      defaultProps = {
-        children: "children",
-        label: "label"
-      },
-      header = [
-        {
-          col: "日期",
-          key: "date"
-        },
-        {
-          col: "姓名",
-          key: "name"
-        },
-        {
-          col: "地址",
-          key: "address"
-        }
-      ];
-    return {
-      tableData: Array(20).fill(item),
-      tableHeader: header,
-      menu: MenuData,
-      defaultProps: defaultProps,
-      form: form,
-      switchText1: switchText1,
-      switchText2: switchText2
-    };
+  data() {},
+  methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    }
   }
 };
 </script>
-
-<style>
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  line-height: 60px;
-}
-
-.el-aside {
-  color: #333;
-}
-</style>
