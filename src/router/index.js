@@ -5,6 +5,8 @@ import Login from "../components/Login.vue";
 import Upload from "../components/Upload.vue";
 import FileList from "../components/FileList.vue";
 import QAtable from "../components/QAtable.vue";
+import Menu from "../components/Menu.vue";
+import Main from "../views/Main.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +35,16 @@ const routes = [
     path: "/qatable",
     name: "QAtable",
     component: QAtable
+  },
+  {
+    path: "/menu",
+    name: "Menu",
+    component: Menu
+  },
+  {
+    path: "/main",
+    name: "Main",
+    component: Main
   },
   {
     path: "/about",

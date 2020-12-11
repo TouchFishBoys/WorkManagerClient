@@ -1,5 +1,9 @@
 <template>
-  <el-table :data="tableData">
+  <el-table
+    :data="
+      tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
+    "
+  >
     <el-table-column
       v-for="header in tableHeader"
       :key="header.key"
@@ -23,9 +27,10 @@
 
 <script>
 export default {
+  props: ["currentPage", "pagesize"],
   data() {
     const item = {
-        date: "2016-05-02",
+        date: this.index,
         name: "edf",
         address: "sad"
       },
