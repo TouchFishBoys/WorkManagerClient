@@ -1,33 +1,45 @@
 <template>
-  <el-table
-    :data="
-      tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
-    "
-  >
-    <el-table-column
-      v-for="header in tableHeader"
-      :key="header.key"
-      :property="header.key"
-      :label="header.col"
-      width="140"
+  <el-main>
+    <el-table
+      :data="
+        tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
+      "
     >
-    </el-table-column>
-    <el-table-column fixed="right" label="操作" width="100">
-      <template slot-scope="scope">
-        <el-button @click="handleDownLoad(scope.row)" type="text" size="small"
-          >下载</el-button
-        >
-        <el-button @click="handlePoint(scope.row)" type="text" size="small"
-          >评分</el-button
-        >
-      </template>
-    </el-table-column>
-  </el-table>
+      <el-table-column
+        v-for="header in tableHeader"
+        :key="header.key"
+        :property="header.key"
+        :label="header.col"
+        width="140"
+      >
+      </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template slot-scope="scope">
+          <el-button @click="handleDownLoad(scope.row)" type="text" size="small"
+            >下载</el-button
+          >
+          <el-button @click="handlePoint(scope.row)" type="text" size="small"
+            >评分</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[5, 10, 20, 50]"
+      :page-size="5"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="tableData.length"
+    >
+    </el-pagination>
+  </el-main>
 </template>
 
 <script>
 export default {
-  props: ["currentPage", "pagesize"],
   data() {
     const item = {
         date: this.index,
@@ -49,9 +61,19 @@ export default {
         }
       ];
     return {
-      tableData: Array(20).fill(item),
-      tableHeader: header
+      tableData: Array(21).fill(item),
+      tableHeader: header,
+      currentPage: 1,
+      pagesize: 5
     };
+  },
+  methods: {
+    handleCurrentChange(val) {
+      this.currentPage = val;
+    },
+    handleSizeChange(val) {
+      this.pagesize = val;
+    }
   }
 };
 </script>
