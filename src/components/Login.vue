@@ -28,8 +28,12 @@
           </tr>
           <tr>
             <td colspan="2">
-              <el-radio v-model="radio" label="1">我是老师</el-radio>
-              <el-radio v-model="radio" label="2">我是学生</el-radio>
+              <el-radio v-model="user.role" label="ROLE_TEACHER"
+                >我是老师</el-radio
+              >
+              <el-radio v-model="user.role" label="ROLE_STUDENT"
+                >我是学生</el-radio
+              >
             </td>
           </tr>
           <tr>
@@ -51,13 +55,24 @@ export default {
       radio: "1",
       user: {
         username: "",
-        password: ""
+        password: "",
+        role: "ROLE_STUDENT"
       }
     };
   },
   methods: {
     doLogin() {
       alert(JSON.stringify(this.user));
+      this.axios.post("auth/login", this.user).then(response => {
+        console.log(response.data);
+        if (response.data.result == "success") {
+          console.log("login success");
+          this.$store.commit("auth/login", response.data.data.token);
+          this.$router.push({
+            path: "/studentMain"
+          });
+        }
+      });
     }
   }
 };
