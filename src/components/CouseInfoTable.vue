@@ -15,11 +15,8 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button @click="handleDownLoad(scope.row)" type="text" size="small"
-            >下载</el-button
-          >
-          <el-button @click="handlePoint(scope.row)" type="text" size="small"
-            >评分</el-button
+          <el-button @click="setPoitPersent(scope.row)" type="text" size="small"
+            >设置分数占比</el-button
           >
         </template>
       </el-table-column>
@@ -42,18 +39,7 @@
       :before-close="handleClose"
     >
       <span>
-        <el-progress
-          type="circle"
-          :percentage="point"
-          :color="customColors"
-        ></el-progress>
-        <el-input-number
-          v-model="point"
-          @change="handleChange"
-          :min="0"
-          :max="100"
-          label="描述文字"
-        ></el-input-number>
+        <point-persent-getter></point-persent-getter>
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -66,25 +52,37 @@
 </template>
 
 <script>
+import PointPersentGetter from "./PointPersentGetter.vue";
 export default {
+  components: { PointPersentGetter },
   data() {
     const item = {
-        date: this.index,
-        name: "edf",
-        address: "sad"
+        courseName: "测试课程名",
+        courseDescription: "测试课程描述",
+        CourseYear: "2020",
+        studentCount: "80",
+        fw: "67/80"
       },
       header = [
         {
-          col: "日期",
-          key: "date"
+          col: "课程名",
+          key: "courseName"
         },
         {
-          col: "姓名",
-          key: "name"
+          col: "课程描述",
+          key: "courseDescription"
         },
         {
-          col: "地址",
-          key: "address"
+          col: "课程学年",
+          key: "CourseYear"
+        },
+        {
+          col: "课程人数",
+          key: "studentCount"
+        },
+        {
+          col: "大作业完成情况",
+          key: "fw"
         }
       ];
     return {
@@ -110,7 +108,7 @@ export default {
     handleSizeChange(val) {
       this.pagesize = val;
     },
-    handlePoint(row) {
+    setPoitPersent(row) {
       this.currentRow = row;
       this.dialogVisible = true;
     }

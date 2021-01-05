@@ -15,11 +15,11 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button @click="handleDownLoad(scope.row)" type="text" size="small"
-            >下载</el-button
-          >
-          <el-button @click="handlePoint(scope.row)" type="text" size="small"
-            >评分</el-button
+          <el-button
+            @click="uploadNormalWork(scope.row)"
+            type="text"
+            size="small"
+            >提交作业</el-button
           >
         </template>
       </el-table-column>
@@ -42,18 +42,20 @@
       :before-close="handleClose"
     >
       <span>
-        <el-progress
-          type="circle"
-          :percentage="point"
-          :color="customColors"
-        ></el-progress>
-        <el-input-number
-          v-model="point"
-          @change="handleChange"
-          :min="0"
-          :max="100"
-          label="描述文字"
-        ></el-input-number>
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :before-remove="beforeRemove"
+          multiple
+          :limit="1"
+          :on-exceed="handleExceed"
+          :file-list="fileList"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">请上传大作业</div>
+        </el-upload>
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -69,22 +71,32 @@
 export default {
   data() {
     const item = {
-        date: this.index,
-        name: "edf",
-        address: "sad"
+        topicName: "测试题目名",
+        topicDescription: "测试题目描述",
+        startTime: "2020/12/23 12:30",
+        endTime: "2020/12/23 12:30",
+        finishedInfo: "67/80"
       },
       header = [
         {
-          col: "日期",
-          key: "date"
+          col: "题目名",
+          key: "topicName"
         },
         {
-          col: "姓名",
-          key: "name"
+          col: "题目描述",
+          key: "topicDescription"
         },
         {
-          col: "地址",
-          key: "address"
+          col: "起始时间",
+          key: "startTime"
+        },
+        {
+          col: "截止时间",
+          key: "endTime"
+        },
+        {
+          col: "完成情况",
+          key: "finishedInfo"
         }
       ];
     return {
@@ -100,7 +112,8 @@ export default {
         { color: "#e6a23c", percentage: 70 },
         { color: "#5cb87a", percentage: 90 },
         { color: "#1989fa", percentage: 80 }
-      ]
+      ],
+      fileList: []
     };
   },
   methods: {
@@ -110,9 +123,21 @@ export default {
     handleSizeChange(val) {
       this.pagesize = val;
     },
-    handlePoint(row) {
+    uploadNormalWork(row) {
       this.currentRow = row;
       this.dialogVisible = true;
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    handleExceed() {
+      this.$message.warning(`每次仅能上传一个文件`);
+    },
+    beforeRemove(file) {
+      return this.$confirm(`确定移除 ${file.name}？`);
     }
   }
 };
