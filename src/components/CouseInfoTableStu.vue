@@ -13,19 +13,10 @@
         width="140"
       >
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="200">
+      <el-table-column fixed="right" label="其他" width="200">
         <template slot-scope="scope">
-          <el-button
-            @click="getNormalWorkTable(scope.row)"
-            type="text"
-            size="small"
-            >查看作业</el-button
-          >
-          <el-button
-            @click="uploadFinalWork(scope.row)"
-            type="text"
-            size="small"
-            >提交大作业</el-button
+          <el-button @click="handleDo(scope.row)" type="text" size="small"
+            >更多操作</el-button
           >
         </template>
       </el-table-column>
@@ -48,6 +39,14 @@
       :before-close="handleClose"
     >
       <span>
+        <el-button type="primary" plain @click="handleGetStudentList"
+          >查看班级名单</el-button
+        >
+        <el-button type="primary" plain @click="handleGetNormalWorkTable"
+          >查看课程作业</el-button
+        >
+        <br />
+        <br />
         <el-upload
           class="upload-demo"
           action="https://jsonplaceholder.typicode.com/posts/"
@@ -142,11 +141,15 @@ export default {
     handleSizeChange(val) {
       this.pagesize = val;
     },
-    getNormalWorkTable(row) {
-      this.currentRow = row;
-      this.$emit("onGetNormalWorkTable", row);
+    handleGetNormalWorkTable() {
+      this.$emit("onGetNormalWorkTable", this.currentRow);
+      this.uploadDialog = false;
     },
-    uploadFinalWork(row) {
+    handleGetStudentList() {
+      this.$emit("onGetStudentList", this.currentRow);
+      this.uploadDialog = false;
+    },
+    handleDo(row) {
       this.currentRow = row;
       this.uploadDialog = true;
     }
