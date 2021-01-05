@@ -7,6 +7,7 @@ import FileList from "../components/FileList.vue";
 import QAtable from "../components/QAtable.vue";
 import Menu from "../components/Menu.vue";
 import Main from "../views/Main.vue";
+import PointPersentGetter from "../components/PointPersentGetter";
 
 Vue.use(VueRouter);
 
@@ -45,6 +46,11 @@ const routes = [
     path: "/main",
     name: "Main",
     component: Main
+  },
+  {
+    path: "/Point",
+    name: "PointPersentGetter",
+    component: PointPersentGetter
   },
   {
     path: "/about",

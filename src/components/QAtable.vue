@@ -23,12 +23,12 @@
 export default {
   data() {
     return {
-      Que1: "这是第1问",
-      Que2: "这是第2问",
-      Que3: "这是第3问",
-      Ans1: "这是第1答",
-      Ans2: "这是第2答",
-      Ans3: "这是第3答"
+      Que1: "",
+      Que2: "",
+      Que3: "",
+      Ans1: "",
+      Ans2: "",
+      Ans3: ""
     };
   },
   methods: {
