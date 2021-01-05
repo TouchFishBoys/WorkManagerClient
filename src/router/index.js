@@ -16,6 +16,7 @@ import StudentMain from "../views/StudentMain.vue";
 import CouseInfoTableStu from "../components/CouseInfoTableStu";
 import NormalWorkInfoTable from "../components/NormalWorkInfoTable";
 import StudentPersonal from "../components/StudentPersonal";
+import StudentInfoTable from "../components/StudentInfoTable";
 Vue.use(VueRouter);
 
 const routes = [
@@ -101,6 +102,11 @@ const routes = [
         path: "StudentPersonal",
         name: "StudentPersonal",
         component: StudentPersonal
+      },
+      {
+        path: "StudentInfoTable",
+        name: "StudentInfoTable",
+        component: StudentInfoTable
       }
     ]
   },

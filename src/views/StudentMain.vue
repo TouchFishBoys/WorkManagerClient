@@ -11,6 +11,7 @@
     <el-main>
       <router-view
         @onGetNormalWorkTable="handleGetNormalWorkTable"
+        @onGetStudentList="handleGetStudentList"
       ></router-view>
     </el-main>
   </el-container>
@@ -53,6 +54,12 @@ export default {
       this.$router.push({
         path: `/studentMain/NormalWorkInfoTable`
       });
+    },
+    handleGetStudentList(row) {
+      (this.currentRow = row),
+        this.$router.push({
+          path: `/studentMain/StudentInfoTable`
+        });
     }
   }
 };
