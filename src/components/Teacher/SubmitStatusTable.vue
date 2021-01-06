@@ -113,7 +113,30 @@ export default {
     handlePoint(row) {
       this.currentRow = row;
       this.dialogVisible = true;
-    }
+      var studentId = 1;
+      this.axios
+        .post(`topic/${studentId}/${this.$route.query.topicId}/score`)
+        .then(response => {
+          console.log(response.data.data);
+          if (response.data.result == "success") {
+            this.$notify({
+              type: "success",
+              message: "成功"
+            });
+          }
+        });
+    },
+    handleDownload(row) {
+      console.log(row);
+      var studentId = 1;
+      this.axios.get(`topic/${studentId}/${this.$route.query.topicId}`, {
+        responseType: "blob"
+      });
+    },
+    loadData() {}
+  },
+  created: function() {
+    this.loadData();
   }
 };
 </script>

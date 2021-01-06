@@ -53,7 +53,7 @@ export default {
         },
         {
           label: "退出登录",
-          index: 9
+          index: "logout"
         }
       ],
       defaultProps: {
@@ -64,6 +64,11 @@ export default {
   },
   methods: {
     handleNodeClick(menulist) {
+      console.log(menulist);
+      if (menulist.index == "logout") {
+        this.$router.push("/Login");
+        this.$store.commit("auth/logout");
+      }
       this.$router.push({
         path: `/teacherMain/${menulist.index}`
       });

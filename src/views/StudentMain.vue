@@ -33,7 +33,7 @@ export default {
         },
         {
           label: "退出登录",
-          index: ""
+          index: "logout"
         }
       ],
       defaultProps: {
@@ -45,6 +45,9 @@ export default {
   },
   methods: {
     handleNodeClick(menulist) {
+      if (menulist.index == "logout") {
+        this.$router.push("/");
+      }
       this.$router.push({
         path: `/studentMain/${menulist.index}`
       });

@@ -36,6 +36,17 @@ export default {
       }
     };
   },
-  methods: {}
+  methods: {
+    loadData() {
+      this.axios
+        .get(`teacher/${localStorage.getItem("USER_ID")}`)
+        .then(response => {
+          this.teacher = response.data.data;
+        });
+    }
+  },
+  created: function() {
+    this.loadData();
+  }
 };
 </script>

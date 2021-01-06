@@ -1,17 +1,19 @@
+const token_keyname = "USER_TOKEN";
+
 const state = {
-  token: localStorage.getItem("JWT_TOKEN")
-    ? localStorage.getItem("JWT_TOKEN")
+  token: localStorage.getItem(token_keyname)
+    ? localStorage.getItem(token_keyname)
     : ""
 };
 
 const mutations = {
   login: (state, token) => {
     state.token = token;
-    localStorage.setItem("USER_TOKEN", token);
+    localStorage.setItem(token_keyname, token);
   },
   logout: state => {
     state.token = null;
-    localStorage.removeItem("USER_TOKEN");
+    localStorage.removeItem(token_keyname);
   }
 };
 

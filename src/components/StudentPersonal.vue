@@ -4,17 +4,17 @@
       <el-row>
         <el-col :span="8"
           ><div class="grid-content bg-purple">
-            学生学号：{{ teacher.teacherNum }}
+            学生学号：{{ student.studentNum }}
           </div></el-col
         >
         <el-col :span="8"
           ><div class="grid-content bg-purple-light">
-            学生姓名：{{ teacher.teacherName }}
+            学生姓名：{{ student.studentName }}
           </div></el-col
         >
         <el-col :span="8"
           ><div class="grid-content bg-purple">
-            学生班级：{{ teacher.teacherTell }}
+            学生班级：{{ student.studentClass }}
           </div></el-col
         >
       </el-row>
@@ -29,13 +29,24 @@ export default {
   components: { CouseInfoTableStu },
   data() {
     return {
-      teacher: {
-        teacherNum: "测试学生学号",
-        teacherName: "测试学生姓名",
-        teacherTell: "测试教师电话"
+      student: {
+        studentNum: "测试学生学号",
+        studentName: "测试学生姓名",
+        studentClass: "测试学生班级"
       }
     };
   },
-  methods: {}
+  methods: {
+    loadData() {
+      this.axios
+        .get(`student/${localStorage.getItem("USER_ID")}`)
+        .then(response => {
+          this.student = response.data.data;
+        });
+    }
+  },
+  created: function() {
+    this.loadData();
+  }
 };
 </script>

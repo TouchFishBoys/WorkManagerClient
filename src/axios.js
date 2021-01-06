@@ -11,7 +11,9 @@ const defaultConfig = {
 const _axios = axiosOriginObj.create(defaultConfig);
 
 _axios.interceptors.request.use(config => {
-  config.headers.Authorization = "Bearer " + store.state.auth.token;
+  if (localStorage.getItem("USER_TOKEN")) {
+    config.headers.Authorization = "Bearer " + store.state.auth.token;
+  }
   return config;
 });
 

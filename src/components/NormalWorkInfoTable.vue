@@ -35,26 +35,20 @@
       :total="tableData.length"
     >
     </el-pagination>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>
         <el-upload
           class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action
+          :http-request="uploadFile"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :before-remove="beforeRemove"
-          multiple
-          :limit="1"
           :on-exceed="handleExceed"
           :file-list="fileList"
+          accept=".war"
         >
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">请上传大作业</div>
         </el-upload>
       </span>
       <span slot="footer" class="dialog-footer">
@@ -70,37 +64,30 @@
 <script>
 export default {
   data() {
-    const item = {
-        topicName: "测试题目名",
-        topicDescription: "测试题目描述",
-        startTime: "2020/12/23 12:30",
-        endTime: "2020/12/23 12:30",
-        finishedInfo: "67/80"
+    const header = [
+      {
+        col: "题目名",
+        key: "topicName"
       },
-      header = [
-        {
-          col: "题目名",
-          key: "topicName"
-        },
-        {
-          col: "题目描述",
-          key: "topicDescription"
-        },
-        {
-          col: "起始时间",
-          key: "startTime"
-        },
-        {
-          col: "截止时间",
-          key: "endTime"
-        },
-        {
-          col: "完成情况",
-          key: "finishedInfo"
-        }
-      ];
+      {
+        col: "题目描述",
+        key: "topicDescription"
+      },
+      {
+        col: "起始时间",
+        key: "startTime"
+      },
+      {
+        col: "截止时间",
+        key: "finishTime"
+      },
+      {
+        col: "完成情况",
+        key: "finishedInfo"
+      }
+    ];
     return {
-      tableData: Array(21).fill(item),
+      tableData: [],
       tableHeader: header,
       currentPage: 1,
       pagesize: 5,
@@ -138,7 +125,51 @@ export default {
     },
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    loadData() {
+      this.axios
+        .get(`/course/${this.$route.query.courseId}/topic`)
+        .then(response => {
+          console.log(response.data.data);
+          this.tableData = response.data.data.topics;
+          this.tableData.forEach((item, index) => {
+            this.tableData[index].finishedInfo =
+              item.finishedCount + "/" + item.totalCount;
+          });
+        });
+    },
+    uploadFile(fileObj) {
+      var form = new window.FormData();
+      form.append("file", fileObj.file);
+      var notifi = this.$notify({
+        type: "info",
+        message: "uploading"
+      });
+      this.axios
+        .post(`${this.currentRow.topicId}`, form, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(() => {
+          notifi.close();
+          this.$notify({
+            type: "success",
+            message: "上传成功"
+          });
+        })
+        .catch(error => {
+          notifi.close();
+          this.$notify({
+            type: "error",
+            message: "上传失败"
+          });
+          console.log(error);
+        });
     }
+  },
+  created: function() {
+    this.loadData();
   }
 };
 </script>

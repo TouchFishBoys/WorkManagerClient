@@ -18,6 +18,9 @@
           <el-button @click="setPoitPersent(scope.row)" type="text" size="small"
             >设置分数占比</el-button
           >
+          <el-button @click="showTopicList(scope.row)" type="text" size="small"
+            >题目列表</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -56,37 +59,30 @@ import PointPersentGetter from "./PointPersentGetter.vue";
 export default {
   components: { PointPersentGetter },
   data() {
-    const item = {
-        courseName: "测试课程名",
-        courseDescription: "测试课程描述",
-        CourseYear: "2020",
-        studentCount: "80",
-        fw: "67/80"
+    const header = [
+      {
+        col: "课程名",
+        key: "courseName"
       },
-      header = [
-        {
-          col: "课程名",
-          key: "courseName"
-        },
-        {
-          col: "课程描述",
-          key: "courseDescription"
-        },
-        {
-          col: "课程学年",
-          key: "CourseYear"
-        },
-        {
-          col: "课程人数",
-          key: "studentCount"
-        },
-        {
-          col: "大作业完成情况",
-          key: "fw"
-        }
-      ];
+      {
+        col: "课程描述",
+        key: "courseDescription"
+      },
+      {
+        col: "课程学年",
+        key: "CourseYear"
+      },
+      {
+        col: "课程人数",
+        key: "studentCount"
+      },
+      {
+        col: "大作业完成情况",
+        key: "fw"
+      }
+    ];
     return {
-      tableData: Array(21).fill(item),
+      tableData: [],
       tableHeader: header,
       currentPage: 1,
       pagesize: 5,
@@ -102,6 +98,14 @@ export default {
     };
   },
   methods: {
+    showTopicList(row) {
+      this.$router.push({
+        path: "/teacherMain/topics",
+        query: {
+          courseId: row.courseId
+        }
+      });
+    },
     handleCurrentChange(val) {
       this.currentPage = val;
     },
@@ -111,7 +115,20 @@ export default {
     setPoitPersent(row) {
       this.currentRow = row;
       this.dialogVisible = true;
+    },
+    loadCourseInfoList() {
+      this.axios.get("course").then(response => {
+        console.log(response.data.data);
+        var data = response.data.data.courses;
+        data.forEach((element, index) => {
+          data[index].fw = element.finishCount + "/" + element.totalCount;
+        });
+        this.tableData = response.data.data.courses;
+      });
     }
+  },
+  created: function() {
+    this.loadCourseInfoList();
   }
 };
 </script>

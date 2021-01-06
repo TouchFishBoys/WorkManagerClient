@@ -28,12 +28,8 @@
           </tr>
           <tr>
             <td colspan="2">
-              <el-radio v-model="user.role" label="ROLE_TEACHER"
-                >我是老师</el-radio
-              >
-              <el-radio v-model="user.role" label="ROLE_STUDENT"
-                >我是学生</el-radio
-              >
+              <el-radio v-model="user.role" label="ROLE_TEACHER">老师</el-radio>
+              <el-radio v-model="user.role" label="ROLE_STUDENT">学生</el-radio>
             </td>
           </tr>
           <tr>
@@ -62,17 +58,34 @@ export default {
   },
   methods: {
     doLogin() {
-      alert(JSON.stringify(this.user));
-      this.axios.post("auth/login", this.user).then(response => {
-        console.log(response.data);
-        if (response.data.result == "success") {
-          console.log("login success");
-          this.$store.commit("auth/login", response.data.data.token);
-          this.$router.push({
-            path: "/studentMain"
-          });
-        }
+      var notifi = this.$notify({
+        type: "info",
+        message: "登录中"
       });
+      this.axios
+        .post("auth/login", this.user)
+        .then(response => {
+          notifi.close();
+          if (response.data.result == "success") {
+            this.$notify.success("登录成功");
+            console.log("login success");
+            this.$store.commit("auth/login", response.data.data.token);
+            localStorage.setItem("USER_ID", response.data.data.userId);
+            if (this.user.role == "ROLE_STUDENT") {
+              this.$router.push({
+                path: "/studentMain"
+              });
+            } else if (this.user.role == "ROLE_TEACHER") {
+              this.$router.push({
+                path: "teacherMain"
+              });
+            }
+          }
+        })
+        .catch(() => {
+          notifi.close();
+          this.$notify.error("用户名或密码错误");
+        });
     }
   }
 };

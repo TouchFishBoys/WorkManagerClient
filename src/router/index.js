@@ -1,18 +1,14 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 import Login from "../components/Login.vue";
 import Upload from "../components/Upload.vue";
 import FileList from "../components/FileList.vue";
 import QAtable from "../components/QAtable.vue";
 import Menu from "../components/Menu.vue";
-import TeacherMain from "../views/TeacherMain.vue";
 import PointPersentGetter from "../components/PointPersentGetter";
-import Default from "../components/Default";
 import TeacherPersonal from "../components/TeacherPersonal";
-import DataTable from "../components/DataTable";
+import DataTable from "../components/Teacher/SubmitStatusTable";
 import AddCouse from "../components/AddCouse";
-import StudentMain from "../views/StudentMain.vue";
 import CouseInfoTableStu from "../components/CouseInfoTableStu";
 import NormalWorkInfoTable from "../components/NormalWorkInfoTable";
 import StudentPersonal from "../components/StudentPersonal";
@@ -22,25 +18,14 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
-  },
-  {
-    path: "/login",
     name: "Login",
     component: Login
   },
-
   {
     path: "/teacherMain",
     name: "Main",
-    component: TeacherMain,
+    component: () => import("../views/TeacherMain.vue"),
     children: [
-      {
-        path: "",
-        name: "Default",
-        component: Default
-      },
       {
         path: "upload",
         name: "Upload",
@@ -80,13 +65,18 @@ const routes = [
         path: "AddCouse",
         name: "AddCouse",
         component: AddCouse
+      },
+      {
+        path: "topics",
+        name: "TopicTable",
+        component: () => import("@/components/Teacher/TopicTable.vue")
       }
     ]
   },
   {
     path: "/studentMain",
     name: "StudentMain",
-    component: StudentMain,
+    component: () => import("../views/StudentMain.vue"),
     children: [
       {
         path: "CouseInfoTable",
@@ -106,7 +96,8 @@ const routes = [
       {
         path: "StudentInfoTable",
         name: "StudentInfoTable",
-        component: StudentInfoTable
+        component: StudentInfoTable,
+        props: route => ({ query: route.query.courseId })
       }
     ]
   },

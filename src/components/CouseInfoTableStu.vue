@@ -32,12 +32,7 @@
       :total="tableData.length"
     >
     </el-pagination>
-    <el-dialog
-      title="提示"
-      :visible.sync="uploadDialog"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="提示" :visible.sync="uploadDialog" width="30%">
       <span>
         <el-button type="primary" plain @click="handleGetStudentList"
           >查看班级名单</el-button
@@ -45,22 +40,6 @@
         <el-button type="primary" plain @click="handleGetNormalWorkTable"
           >查看课程作业</el-button
         >
-        <br />
-        <br />
-        <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          multiple
-          :limit="1"
-          :on-exceed="handleExceed"
-          :file-list="fileList"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">请上传大作业</div>
-        </el-upload>
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="uploadDialog = false">取 消</el-button>
@@ -75,37 +54,30 @@
 <script>
 export default {
   data() {
-    const item = {
-        courseName: "测试课程名",
-        courseDescription: "测试课程描述",
-        CourseYear: "2020",
-        studentCount: "80",
-        fw: "67/80"
+    const header = [
+      {
+        col: "课程名",
+        key: "courseName"
       },
-      header = [
-        {
-          col: "课程名",
-          key: "courseName"
-        },
-        {
-          col: "课程描述",
-          key: "courseDescription"
-        },
-        {
-          col: "课程学年",
-          key: "CourseYear"
-        },
-        {
-          col: "课程人数",
-          key: "studentCount"
-        },
-        {
-          col: "大作业完成情况",
-          key: "fw"
-        }
-      ];
+      {
+        col: "课程描述",
+        key: "courseDescription"
+      },
+      {
+        col: "课程学年",
+        key: "courseYear"
+      },
+      {
+        col: "课程人数",
+        key: "studentCount"
+      },
+      {
+        col: "大作业完成情况",
+        key: "fw"
+      }
+    ];
     return {
-      tableData: Array(21).fill(item),
+      tableData: [],
       tableHeader: header,
       currentPage: 1,
       pagesize: 5,
@@ -142,17 +114,40 @@ export default {
       this.pagesize = val;
     },
     handleGetNormalWorkTable() {
-      this.$emit("onGetNormalWorkTable", this.currentRow);
+      this.$router.push({
+        name: "NormalWorkInfoTable",
+        query: {
+          courseId: this.currentRow.courseId
+        }
+      });
       this.uploadDialog = false;
     },
     handleGetStudentList() {
-      this.$emit("onGetStudentList", this.currentRow);
+      this.$router.push({
+        path: "/studentMain/StudentInfoTable",
+        query: {
+          courseId: this.currentRow.courseId
+        }
+      });
       this.uploadDialog = false;
     },
     handleDo(row) {
       this.currentRow = row;
       this.uploadDialog = true;
+    },
+    loadCourseInfoList() {
+      this.axios.get("course").then(response => {
+        console.log(response.data.data);
+        var data = response.data.data.courses;
+        data.forEach((element, index) => {
+          data[index].fw = element.finishCount + "/" + element.totalCount;
+        });
+        this.tableData = response.data.data.courses;
+      });
     }
+  },
+  created: function() {
+    this.loadCourseInfoList();
   }
 };
 </script>

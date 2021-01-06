@@ -13,6 +13,16 @@
         width="140"
       >
       </el-table-column>
+      <el-table-column fixed="right" label="操作" width="100">
+        <template slot-scope="scope">
+          <el-button
+            @click="showSubmitStatus(scope.row)"
+            type="text"
+            size="small"
+            >显示提交情况</el-button
+          >
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-pagination
@@ -33,16 +43,24 @@ export default {
   data() {
     const header = [
       {
-        col: "学生学号",
-        key: "studentNum"
+        col: "题目名",
+        key: "topicName"
       },
       {
-        col: "学生姓名",
-        key: "studentName"
+        col: "题目描述",
+        key: "topicDescription"
       },
       {
-        col: "学生班级",
-        key: "studentClass"
+        col: "起始时间",
+        key: "startTime"
+      },
+      {
+        col: "截止时间",
+        key: "finishTime"
+      },
+      {
+        col: "完成情况",
+        key: "finishedInfo"
       }
     ];
     return {
@@ -85,11 +103,25 @@ export default {
     beforeRemove(file) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
-    loadData() {
-      this.axios.get(`course/${this.$attrs.query}/student`).then(response => {
-        console.log(response.data.data);
-        this.tableData = response.data.data;
+    showSubmitStatus(row) {
+      this.$router.push({
+        path: "/teacherMain/DataTable",
+        query: {
+          topicId: row.topicId
+        }
       });
+    },
+    loadData() {
+      this.axios
+        .get(`/course/${this.$route.query.courseId}/topic`)
+        .then(response => {
+          console.log(response.data.data);
+          this.tableData = response.data.data.topics;
+          this.tableData.forEach((item, index) => {
+            this.tableData[index].finishedInfo =
+              item.finishedCount + "/" + item.totalCount;
+          });
+        });
     }
   },
   created: function() {
