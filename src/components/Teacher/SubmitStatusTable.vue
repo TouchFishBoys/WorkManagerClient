@@ -1,10 +1,6 @@
 <template>
-  <el-main>
-    <el-table
-      :data="
-        tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
-      "
-    >
+  <div>
+    <el-table :data="tableData">
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"
@@ -15,7 +11,7 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button @click="handleDownLoad(scope.row)" type="text" size="small"
+          <el-button @click="handleDownload(scope.row)" type="text" size="small"
             >下载</el-button
           >
           <el-button @click="handlePoint(scope.row)" type="text" size="small"
@@ -35,12 +31,7 @@
       :total="tableData.length"
     >
     </el-pagination>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>
         <el-progress
           type="circle"
@@ -49,7 +40,6 @@
         ></el-progress>
         <el-input-number
           v-model="point"
-          @change="handleChange"
           :min="0"
           :max="100"
           label="描述文字"
@@ -62,7 +52,7 @@
         >
       </span>
     </el-dialog>
-  </el-main>
+  </div>
 </template>
 
 <script>
@@ -91,7 +81,7 @@ export default {
       tableData: Array(21).fill(item),
       tableHeader: header,
       currentPage: 1,
-      pagesize: 5,
+      pageSize: 5,
       dialogVisible: false,
       point: 60,
       currentRow: 0,
@@ -113,12 +103,12 @@ export default {
     handlePoint(row) {
       this.currentRow = row;
       this.dialogVisible = true;
-      var studentId = 1;
+      let studentId = 1;
       this.axios
         .post(`topic/${studentId}/${this.$route.query.topicId}/score`)
         .then(response => {
           console.log(response.data.data);
-          if (response.data.result == "success") {
+          if (response.data.result === "success") {
             this.$notify({
               type: "success",
               message: "成功"
@@ -128,7 +118,7 @@ export default {
     },
     handleDownload(row) {
       console.log(row);
-      var studentId = 1;
+      let studentId = 1;
       this.axios.get(`topic/${studentId}/${this.$route.query.topicId}`, {
         responseType: "blob"
       });
@@ -140,15 +130,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  line-height: 60px;
-}
-
-.el-aside {
-  color: #333;
-}
-</style>

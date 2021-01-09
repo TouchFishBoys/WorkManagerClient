@@ -19,14 +19,14 @@
         >
       </el-row>
     </el-header>
-    <el-main><couse-info-table-stu></couse-info-table-stu></el-main>
+    <el-main><course-info-table-stu></course-info-table-stu></el-main>
   </el-container>
 </template>
 <script>
-import CouseInfoTableStu from "./CouseInfoTableStu.vue";
+import courseInfoTableStu from "./CourseInfoTableStu.vue";
 
 export default {
-  components: { CouseInfoTableStu },
+  components: { courseInfoTableStu },
   data() {
     return {
       student: {

@@ -19,14 +19,14 @@
         >
       </el-row>
     </el-header>
-    <el-main><couse-info-table></couse-info-table></el-main>
+    <el-main><course-info-table></course-info-table></el-main>
   </el-container>
 </template>
 <script>
-import CouseInfoTable from "./CouseInfoTable.vue";
+import CourseInfoTable from "./CourseInfoTable.vue";
 
 export default {
-  components: { CouseInfoTable },
+  components: { CourseInfoTable },
   data() {
     return {
       teacher: {
@@ -36,17 +36,6 @@ export default {
       }
     };
   },
-  methods: {
-    loadData() {
-      this.axios
-        .get(`teacher/${localStorage.getItem("USER_ID")}`)
-        .then(response => {
-          this.teacher = response.data.data;
-        });
-    }
-  },
-  created: function() {
-    this.loadData();
-  }
+  methods: {}
 };
 </script>

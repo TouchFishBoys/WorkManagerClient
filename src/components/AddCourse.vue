@@ -1,22 +1,16 @@
 <template>
   <div>
-    <el-form
-      :label-position="labelPosition"
-      label-width="80px"
-      :model="formLabelAlign"
-      ref="formAddCourse"
-    >
+    <el-form label-width="80px" ref="formAddCourse">
       <el-form-item label="课程名">
-        <el-input v-model="couse.couseName"></el-input>
+        <el-input v-model="course.courseName"></el-input>
       </el-form-item>
       <el-form-item label="课程描述">
-        <el-input v-model="couse.couseDescription"></el-input>
+        <el-input v-model="course.courseDescription"></el-input>
       </el-form-item>
       <el-form-item label="学生名单">
         <el-upload
           :on-change="changeFile"
           action=""
-          :http-request="handleFile"
           :multiple="false"
           :on-exceed="handleExceed"
           :file-list="fileList"
@@ -37,9 +31,9 @@ export default {
   components: {},
   data() {
     return {
-      couse: {
-        couseName: "",
-        couseDescription: ""
+      course: {
+        courseName: "",
+        courseDescription: ""
       },
       fileList: []
     };
@@ -58,13 +52,12 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     changeFile(file, filelist) {
-      //文件状态改变时的钩子 把filelist 赋值给data中的filelist
       this.fileList = [...filelist];
     },
     onSubmit() {
-      var formData = new FormData();
-      formData.append("course_name", this.couse.couseName);
-      formData.append("course_description", this.couse.couseDescription);
+      const formData = new FormData();
+      formData.append("course_name", this.course.courseName);
+      formData.append("course_description", this.course.courseDescription);
       formData.append("excel", this.fileList[0].raw);
       this.axios.post("student", formData).then(response => {
         console.log(response.data);

@@ -1,3 +1,5 @@
+import jwtDecode from "jwt-decode";
+
 const token_keyname = "USER_TOKEN";
 
 const state = {
@@ -17,8 +19,15 @@ const mutations = {
   }
 };
 
+const getters = {
+  userId: state => {
+    return jwtDecode(state.token).user_id;
+  }
+};
+
 export default {
   namespaced: true,
   state: state,
-  mutations
+  mutations,
+  getters
 };

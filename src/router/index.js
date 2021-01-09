@@ -1,29 +1,34 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Login from "../components/Login.vue";
-import Upload from "../components/Upload.vue";
-import FileList from "../components/FileList.vue";
-import QAtable from "../components/QAtable.vue";
-import Menu from "../components/Menu.vue";
-import PointPersentGetter from "../components/PointPersentGetter";
-import TeacherPersonal from "../components/TeacherPersonal";
-import DataTable from "../components/Teacher/SubmitStatusTable";
-import AddCouse from "../components/AddCouse";
-import CouseInfoTableStu from "../components/CouseInfoTableStu";
-import NormalWorkInfoTable from "../components/NormalWorkInfoTable";
-import StudentPersonal from "../components/StudentPersonal";
-import StudentInfoTable from "../components/StudentInfoTable";
+import Upload from "@/components/Upload.vue";
+import FileList from "@/components/FileList.vue";
+import QAtable from "@/components/QAtable.vue";
+import Menu from "@/components/Menu.vue";
+import PointPersentGetter from "@/components/PointPercentGetter";
+import TeacherPersonal from "@/components/Teacher/TeacherPersonal";
+import DataTable from "@/components/Teacher/SubmitStatusTable";
+import AddCourse from "@/components/AddCourse";
+import courseInfoTableStu from "@/components/Student/CourseInfoTableStu";
+import NormalWorkInfoTable from "@/components/NormalWorkInfoTable";
+import StudentPersonal from "@/components/Student/StudentPersonal";
+import StudentInfoTable from "@/components/StudentInfoTable";
+import store from "@/store";
+
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
     name: "Login",
-    component: Login
+    alias: "/Login",
+    component: () => import("../components/Login")
   },
   {
     path: "/teacherMain",
     name: "Main",
+    meta: {
+      requireAuth: true
+    },
     component: () => import("../views/TeacherMain.vue"),
     children: [
       {
@@ -62,14 +67,17 @@ const routes = [
         component: DataTable
       },
       {
-        path: "AddCouse",
-        name: "AddCouse",
-        component: AddCouse
+        path: "AddCourse",
+        name: "AddCourse",
+        component: AddCourse
       },
       {
         path: "topics",
         name: "TopicTable",
-        component: () => import("@/components/Teacher/TopicTable.vue")
+        component: () =>
+          import(
+            /* webpackChunkName: "group-teacher" */ "@/components/Teacher/TopicTable.vue"
+          )
       }
     ]
   },
@@ -79,9 +87,9 @@ const routes = [
     component: () => import("../views/StudentMain.vue"),
     children: [
       {
-        path: "CouseInfoTable",
-        name: "CouseInfoTable",
-        component: CouseInfoTableStu
+        path: "courseInfoTable",
+        name: "courseInfoTable",
+        component: courseInfoTableStu
       },
       {
         path: "NormalWorkInfoTable",
@@ -100,15 +108,6 @@ const routes = [
         props: route => ({ query: route.query.courseId })
       }
     ]
-  },
-  {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
   }
 ];
 
@@ -116,6 +115,20 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (store.state.auth.token) {
+      next();
+    } else {
+      next({
+        path: "Login"
+      });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

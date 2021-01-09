@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav" style="background:#BCDBFB"></div>
     <router-view />
   </div>
 </template>

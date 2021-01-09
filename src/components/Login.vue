@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     doLogin() {
-      var notifi = this.$notify({
+      let notifi = this.$notify({
         type: "info",
         message: "登录中"
       });
@@ -66,18 +66,18 @@ export default {
         .post("auth/login", this.user)
         .then(response => {
           notifi.close();
-          if (response.data.result == "success") {
+          if (response.data.result === "success") {
             this.$notify.success("登录成功");
             console.log("login success");
             this.$store.commit("auth/login", response.data.data.token);
             localStorage.setItem("USER_ID", response.data.data.userId);
-            if (this.user.role == "ROLE_STUDENT") {
+            if (this.user.role === "ROLE_STUDENT") {
               this.$router.push({
                 path: "/studentMain"
               });
-            } else if (this.user.role == "ROLE_TEACHER") {
+            } else if (this.user.role === "ROLE_TEACHER") {
               this.$router.push({
-                path: "teacherMain"
+                path: "/teacherMain"
               });
             }
           }

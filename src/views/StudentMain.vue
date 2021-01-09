@@ -29,7 +29,7 @@ export default {
         },
         {
           label: "课程列表",
-          index: "CouseInfoTable"
+          index: "courseInfoTable"
         },
         {
           label: "退出登录",
@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     handleNodeClick(menulist) {
-      if (menulist.index == "logout") {
+      if (menulist.index === "logout") {
         this.$router.push("/");
       }
       this.$router.push({
@@ -59,10 +59,10 @@ export default {
       });
     },
     handleGetStudentList(row) {
-      (this.currentRow = row),
-        this.$router.push({
-          path: `/studentMain/StudentInfoTable`
-        });
+      this.currentRow = row;
+      this.$router.push({
+        path: `/studentMain/StudentInfoTable`
+      });
     }
   }
 };
