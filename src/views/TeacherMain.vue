@@ -1,12 +1,8 @@
 <template>
   <div class="homeBox">
-    <el-container ref="homePage">
-      <el-header>
-        <el-checkbox-group>
-          <el-checkbox-button>klsadjadlk</el-checkbox-button>
-        </el-checkbox-group>
-      </el-header>
-      <el-container>
+    <el-container>
+      <el-header></el-header>
+      <el-container ref="homePage">
         <el-aside width="200px">
           <el-row>
             <el-col :span="24">
@@ -105,32 +101,18 @@ export default {
     };
   },
   methods: {
-    changeFixed(clientHeight) {
-      //动态修改样式
-      // console.log(clientHeight);
-      console.log(this.$refs.homePage.$el.style.height);
-      this.$refs.homePage.$el.style.height = clientHeight + "px";
+    changeSize: function() {
+      this.$refs["homePage"].$el["style"].height = `${document.documentElement
+        .clientHeight - 60}px`;
     }
   },
   mounted() {
     const that = this;
-    //this.clientHeight = `${document.documentElement.clientHeight}`;
-    //document.body.clientWidth;
-    //console.log(self.clientHeight);
-    window.onresize = function temp() {
-      that.changeFixed(`${document.documentElement.clientHeight}px`);
+    this.changeSize();
+    window.onresize = function() {
+      that.changeSize();
     };
-  },
-  watch: {
-    // 如果 `clientHeight` 发生改变，这个函数就会运行
-    clientHeight: function() {
-      this.changeFixed(this.clientHeight);
-    }
   }
 };
 </script>
-<style scoped>
-.homeBox {
-  height: 100%;
-}
-</style>
+<style scoped></style>

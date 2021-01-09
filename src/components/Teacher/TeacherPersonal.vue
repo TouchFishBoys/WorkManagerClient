@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <course-info-table></course-info-table>
+  <div style="height: 100%">
+    <course-info-table style="height: 100%"></course-info-table>
   </div>
 </template>
 <script>

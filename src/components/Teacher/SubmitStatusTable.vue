@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="tableData">
+    <el-table :data="tableData" height="700" v-loading="loading">
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"
@@ -78,6 +78,7 @@ export default {
         }
       ];
     return {
+      loading: true,
       tableData: Array(21).fill(item),
       tableHeader: header,
       currentPage: 1,
@@ -104,9 +105,11 @@ export default {
       this.currentRow = row;
       this.dialogVisible = true;
       let studentId = 1;
+      this.loading = true;
       this.axios
         .post(`topic/${studentId}/${this.$route.query.topicId}/score`)
         .then(response => {
+          this.loading = false;
           console.log(response.data.data);
           if (response.data.result === "success") {
             this.$notify({

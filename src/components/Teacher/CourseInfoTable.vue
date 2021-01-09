@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table :data="tableData">
+    <el-table :data="tableData" v-loading="loading">
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"
@@ -22,6 +22,7 @@
     </el-table>
 
     <el-pagination
+      style="bottom: 0"
       @size-change="loadCourseInfoList"
       @current-change="loadCourseInfoList"
       :current-page="currentPage"
@@ -74,6 +75,7 @@ export default {
       }
     ];
     return {
+      loading: true,
       tableData: [],
       tableHeader: header,
       currentPage: 1,
@@ -107,6 +109,7 @@ export default {
       this.dialogVisible = true;
     },
     loadCourseInfoList() {
+      this.loading = true;
       this.axios
         .get("course", {
           params: {
@@ -115,6 +118,7 @@ export default {
           }
         })
         .then(response => {
+          this.loading = false;
           console.log(response.data.data);
           let data = response.data.data["courses"];
           data.forEach((element, index) => {
