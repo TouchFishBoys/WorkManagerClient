@@ -1,5 +1,8 @@
 <template>
   <div>
+    <el-breadcrumb>
+      <el-breadcrumb-item>一级菜单</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-table :data="tableData" v-loading="loading">
       <el-table-column
         v-for="header in tableHeader"
@@ -22,14 +25,13 @@
     </el-table>
 
     <el-pagination
-      style="bottom: 0"
       @size-change="loadCourseInfoList"
       @current-change="loadCourseInfoList"
       :current-page="currentPage"
       :page-sizes="[5, 10, 20, 50]"
       :page-size="pageSize"
       layout="sizes, total, prev, pager, next, jumper"
-      :total="tableData.length"
+      :page-count="tablePageCount"
     >
     </el-pagination>
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
@@ -78,6 +80,7 @@ export default {
       loading: true,
       tableData: [],
       tableHeader: header,
+      tablePageCount: 1,
       currentPage: 1,
       pageSize: 5,
       dialogVisible: false,
@@ -126,6 +129,11 @@ export default {
               element["finishCount"] + "/" + element["totalCount"];
           });
           this.tableData = response.data.data["courses"];
+          this.tablePageCount = response.data.data["pageCount"];
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
         });
     }
   },

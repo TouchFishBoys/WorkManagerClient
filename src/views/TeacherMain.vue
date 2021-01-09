@@ -3,7 +3,7 @@
     <el-container>
       <el-header></el-header>
       <el-container ref="homePage">
-        <el-aside width="200px">
+        <el-aside width="300px">
           <el-row>
             <el-col :span="24">
               <el-menu
