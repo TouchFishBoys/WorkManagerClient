@@ -1,5 +1,11 @@
 <template>
   <el-main>
+    <el-breadcrumb>
+      <el-breadcrumb-item :to="{ path: '/teacherMain/Personal' }"
+        >课程列表</el-breadcrumb-item
+      >
+      <el-breadcrumb-item>题目列表</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-table
       :data="
         tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)

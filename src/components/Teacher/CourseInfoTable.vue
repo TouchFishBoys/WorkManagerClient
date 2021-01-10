@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <el-main>
     <el-breadcrumb>
-      <el-breadcrumb-item>一级菜单</el-breadcrumb-item>
+      <el-breadcrumb-item>课程列表</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-table :data="tableData" v-loading="loading">
+    <el-table :data="tableData" v-loading="loading" max-height="550px">
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"
@@ -25,8 +25,8 @@
     </el-table>
 
     <el-pagination
-      @size-change="loadCourseInfoList"
-      @current-change="loadCourseInfoList"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-sizes="[5, 10, 20, 50]"
       :page-size="pageSize"
@@ -45,7 +45,7 @@
         >
       </span>
     </el-dialog>
-  </div>
+  </el-main>
 </template>
 
 <script>
@@ -106,7 +106,9 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val;
     },
-    handleSizeChange() {},
+    handleSizeChange(val) {
+      this.pageSize = val;
+    },
     setPoitPercent(row) {
       this.currentRow = row;
       this.dialogVisible = true;
@@ -139,6 +141,14 @@ export default {
   },
   created: function() {
     this.loadCourseInfoList();
+  },
+  watch: {
+    currentPage: function() {
+      this.loadCourseInfoList();
+    },
+    pageSize: function() {
+      this.loadCourseInfoList();
+    }
   }
 };
 </script>

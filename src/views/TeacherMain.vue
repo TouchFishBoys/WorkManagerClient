@@ -46,9 +46,7 @@
             </el-col>
           </el-row>
         </el-aside>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
+        <router-view></router-view>
       </el-container>
     </el-container>
   </div>

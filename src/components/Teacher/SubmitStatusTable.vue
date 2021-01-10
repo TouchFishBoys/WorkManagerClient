@@ -104,6 +104,15 @@ export default {
     handlePoint(row) {
       this.currentRow = row;
       this.dialogVisible = true;
+    },
+    handleDownload(row) {
+      console.log(row);
+      let studentId = 1;
+      this.axios.get(`topic/${studentId}/${this.$route.query.topicId}`, {
+        responseType: "blob"
+      });
+    },
+    loadData() {
       let studentId = 1;
       this.loading = true;
       this.axios
@@ -117,16 +126,11 @@ export default {
               message: "成功"
             });
           }
+        })
+        .catch(error => {
+          console.log(error);
         });
-    },
-    handleDownload(row) {
-      console.log(row);
-      let studentId = 1;
-      this.axios.get(`topic/${studentId}/${this.$route.query.topicId}`, {
-        responseType: "blob"
-      });
-    },
-    loadData() {}
+    }
   },
   created: function() {
     this.loadData();
