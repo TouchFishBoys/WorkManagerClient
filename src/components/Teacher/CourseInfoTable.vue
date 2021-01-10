@@ -3,7 +3,13 @@
     <el-breadcrumb>
       <el-breadcrumb-item>课程列表</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-table :data="tableData" v-loading="loading" max-height="550px">
+    <el-table
+      element-loading-text="少女折寿中"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      :data="tableData"
+      v-loading="loading"
+      max-height="550px"
+    >
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"

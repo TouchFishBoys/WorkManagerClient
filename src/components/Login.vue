@@ -1,54 +1,43 @@
 <template>
-  <div>
-    <div style="display: flex; justify-content: center; margin-top: 150px">
-      <el-card style="width: 400px">
-        <div slot="header" class="clearfix">
-          <span>登录</span>
-        </div>
-        <table>
-          <tr>
-            <td>用户名</td>
-            <td>
-              <el-input
-                v-model="user.username"
-                placeholder="请输入用户名"
-              ></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td>密码</td>
-            <td>
-              <el-input
-                type="password"
-                v-model="user.password"
-                placeholder="请输入密码"
-                @keydown.enter.native="doLogin"
-              ></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <el-radio v-model="user.role" label="ROLE_TEACHER">老师</el-radio>
-              <el-radio v-model="user.role" label="ROLE_STUDENT">学生</el-radio>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <el-button style="width: 300px" type="primary" @click="doLogin"
-                >登录</el-button
-              >
-            </td>
-          </tr>
-        </table>
-      </el-card>
-    </div>
+  <div class="login-box" :style="backcss">
+    <el-card style="width: 400px" class="login-card noselect">
+      <div slot="header" class="clearfix">
+        <span>登录</span>
+      </div>
+      <el-form :model="user" label-width="80px">
+        <el-form-item prop="username" label="工号/学号">
+          <el-input
+            v-model="user.username"
+            placeholder="请输入用户名"
+          ></el-input>
+        </el-form-item>
+        <el-form-item prop="password" label="密码">
+          <el-input
+            v-model="user.password"
+            placeholder="请输入密码"
+            type="password"
+          ></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-radio-group v-model="user.role">
+            <el-radio label="ROLE_TEACHER">教师</el-radio>
+            <el-radio label="ROLE_STUDENT">学生</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="doLogin">登录</el-button>
+        </el-form-item>
+      </el-form>
+    </el-card>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      radio: "1",
+      backcss: {
+        backgroundImage: "url(" + require("@/assets/background.png") + ")"
+      },
       user: {
         username: "",
         password: "",
@@ -68,7 +57,6 @@ export default {
           notifi.close();
           if (response.data.result === "success") {
             this.$notify.success("登录成功");
-            console.log("login success");
             this.$store.commit("auth/login", response.data.data.token);
             localStorage.setItem("USER_ID", response.data.data.userId);
             if (this.user.role === "ROLE_STUDENT") {
@@ -90,3 +78,20 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.login-box {
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+}
+.login-card {
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  position: fixed;
+  height: 350px;
+  right: 0;
+  left: 0;
+}
+</style>

@@ -46,7 +46,9 @@
             </el-col>
           </el-row>
         </el-aside>
-        <router-view></router-view>
+        <el-main class="main-container">
+          <router-view />
+        </el-main>
       </el-container>
     </el-container>
   </div>
@@ -113,4 +115,8 @@ export default {
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+.main-container {
+  width: 100%;
+}
+</style>

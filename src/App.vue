@@ -1,8 +1,12 @@
 <template>
-  <div id="app">
+  <div id="app" ref="appPage">
     <router-view />
   </div>
 </template>
+
+<script>
+export default {};
+</script>
 
 <style>
 #app {

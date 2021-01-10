@@ -10,6 +10,7 @@
       :data="
         tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
       "
+      v-loading="loading"
     >
       <el-table-column
         v-for="header in tableHeader"
@@ -70,6 +71,7 @@ export default {
       }
     ];
     return {
+      loading: true,
       tableData: [],
       tableHeader: header,
       currentPage: 1,
@@ -118,9 +120,11 @@ export default {
       });
     },
     loadData() {
+      this.loading = true;
       this.axios
         .get(`/course/${this.$route.query.courseId}/topic`)
         .then(response => {
+          this.loading = false;
           console.log(response.data.data);
           this.tableData = response.data.data.topics;
           this.tableData.forEach((item, index) => {
