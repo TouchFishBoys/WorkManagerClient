@@ -8,7 +8,7 @@ import PointPersentGetter from "@/components/PointPercentGetter";
 import TeacherPersonal from "@/components/Teacher/TeacherPersonal";
 import DataTable from "@/components/Teacher/SubmitStatusTable";
 import AddCourse from "@/components/AddCourse";
-import courseInfoTableStu from "@/components/Student/CourseInfoTableStu";
+import CourseInfoTableStu from "@/components/Student/CourseInfoTableStu";
 import NormalWorkInfoTable from "@/components/NormalWorkInfoTable";
 import StudentPersonal from "@/components/Student/StudentPersonal";
 import StudentInfoTable from "@/components/StudentInfoTable";
@@ -72,6 +72,11 @@ const routes = [
         component: AddCourse
       },
       {
+        path: "courses",
+        name: "Course",
+        component: () => import("@/components/Teacher/CourseInfoTable")
+      },
+      {
         path: "topics",
         name: "TopicTable",
         component: () =>
@@ -84,12 +89,15 @@ const routes = [
   {
     path: "/studentMain",
     name: "StudentMain",
+    meta: {
+      requireAuth: true
+    },
     component: () => import("../views/StudentMain.vue"),
     children: [
       {
-        path: "courseInfoTable",
-        name: "courseInfoTable",
-        component: courseInfoTableStu
+        path: "courses",
+        name: "CourseStu",
+        component: CourseInfoTableStu
       },
       {
         path: "NormalWorkInfoTable",

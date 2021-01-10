@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,5 +28,19 @@ export default {};
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.el-breadcrumb {
+  height: 30px;
+}
+
+.comp-container {
+  display: flex;
+  height: 100%;
+}
+
+.comp-columm {
+  flex-direction: column;
+  @extend .comp-container;
 }
 </style>

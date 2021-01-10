@@ -1,7 +1,7 @@
 <template>
-  <el-main>
-    <el-breadcrumb>
-      <el-breadcrumb-item :to="{ path: '/teacherMain/Personal' }"
+  <div class="topic-container">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/teacherMain/course' }"
         >课程列表</el-breadcrumb-item
       >
       <el-breadcrumb-item>题目列表</el-breadcrumb-item>
@@ -11,6 +11,8 @@
         tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
       "
       v-loading="loading"
+      element-loading-text="少女折寿中"
+      element-loading-background="rgba(0, 0, 0, 0.4)"
     >
       <el-table-column
         v-for="header in tableHeader"
@@ -42,7 +44,7 @@
       :total="tableData.length"
     >
     </el-pagination>
-  </el-main>
+  </div>
 </template>
 
 <script>
@@ -141,13 +143,9 @@ export default {
 </script>
 
 <style>
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  line-height: 60px;
-}
-
-.el-aside {
-  color: #333;
+.topic-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

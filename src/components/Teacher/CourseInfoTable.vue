@@ -1,14 +1,15 @@
 <template>
-  <el-main>
+  <div class="course-container">
     <el-breadcrumb>
       <el-breadcrumb-item>课程列表</el-breadcrumb-item>
     </el-breadcrumb>
     <el-table
       element-loading-text="少女折寿中"
-      element-loading-background="rgba(0, 0, 0, 0.8)"
+      element-loading-background="rgba(0, 0, 0, 0.4)"
       :data="tableData"
       v-loading="loading"
-      max-height="550px"
+      height="550px"
+      border
     >
       <el-table-column
         v-for="header in tableHeader"
@@ -51,7 +52,7 @@
         >
       </span>
     </el-dialog>
-  </el-main>
+  </div>
 </template>
 
 <script>
@@ -159,4 +160,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.course-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+</style>

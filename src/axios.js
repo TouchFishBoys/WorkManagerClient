@@ -29,7 +29,7 @@ _axios.interceptors.response.use(
     return response;
   },
   error => {
-    if (error.response) {
+    if (error && error.response) {
       console.log(error.response);
       switch (error.response.status) {
         case 401:
@@ -44,6 +44,13 @@ _axios.interceptors.response.use(
           localStorage.removeItem(store.state.auth.token_keyname);
           router.replace({ path: "login" });
           break;
+      }
+    } else {
+      if (JSON.stringify(error).includes("timeout")) {
+        Message({
+          type: "error",
+          message: "连接超时"
+        });
       }
     }
     return Promise.reject(error);

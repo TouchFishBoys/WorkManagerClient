@@ -1,8 +1,8 @@
 <template>
-  <div class="homeBox">
+  <div>
     <el-container>
       <el-header></el-header>
-      <el-container ref="homePage">
+      <el-container ref="homePage" class="view-container">
         <el-aside width="300px">
           <el-row>
             <el-col :span="24">
@@ -99,24 +99,14 @@ export default {
         label: "label"
       }
     };
-  },
-  methods: {
-    changeSize: function() {
-      this.$refs["homePage"].$el["style"].height = `${document.documentElement
-        .clientHeight - 60}px`;
-    }
-  },
-  mounted() {
-    const that = this;
-    this.changeSize();
-    window.onresize = function() {
-      that.changeSize();
-    };
   }
 };
 </script>
 <style scoped>
 .main-container {
   width: 100%;
+}
+.view-container {
+  height: calc(100vh - 60px);
 }
 </style>

@@ -1,6 +1,21 @@
 <template>
-  <div>
-    <el-table :data="tableData" height="700" v-loading="loading">
+  <div class="submit-container">
+    <el-breadcrumb>
+      <el-breadcrumb-item :to="{ path: '/teacherMain/course' }"
+        >课程列表</el-breadcrumb-item
+      >
+      <el-breadcrumb-item :to="{ path: '/teacherMain/topics' }"
+        >题目列表</el-breadcrumb-item
+      >
+      <el-breadcrumb-item>提交情况</el-breadcrumb-item>
+    </el-breadcrumb>
+    <el-table
+      :data="tableData"
+      height="700"
+      v-loading="loading"
+      element-loading-text="少女折寿中"
+      element-loading-background="rgba(0, 0, 0, 0.4)"
+    >
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"
@@ -64,18 +79,9 @@ export default {
         address: "sad"
       },
       header = [
-        {
-          col: "日期",
-          key: "date"
-        },
-        {
-          col: "姓名",
-          key: "name"
-        },
-        {
-          col: "地址",
-          key: "address"
-        }
+        { col: "日期", key: "date" },
+        { col: "姓名", key: "name" },
+        { col: "地址", key: "address" }
       ];
     return {
       loading: true,
@@ -87,9 +93,15 @@ export default {
       point: 60,
       currentRow: 0,
       customColors: [
-        { color: "#f56c6c", percentage: 60 },
+        {
+          color: "#f56c6c",
+          percentage: 60
+        },
         { color: "#e6a23c", percentage: 70 },
-        { color: "#5cb87a", percentage: 90 },
+        {
+          color: "#5cb87a",
+          percentage: 90
+        },
         { color: "#1989fa", percentage: 80 }
       ]
     };
@@ -137,3 +149,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+.submit-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+</style>
