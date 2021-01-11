@@ -1,9 +1,15 @@
 <template>
-  <el-main>
+  <div class="course-container">
+    <el-breadcrumb>
+      <el-breadcrumb-item>课程列表</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-table
-      :data="
-        tableData.slice((currentPage - 1) * pagesize, currentPage * pagesize)
-      "
+      element-loading-text="少女折寿中"
+      element-loading-background="rgba(0, 0, 0, 0.4)"
+      :data="tableData"
+      v-loading="loading"
+      height="550px"
+      border
     >
       <el-table-column
         v-for="header in tableHeader"
@@ -27,12 +33,12 @@
       @current-change="handleCurrentChange"
       :current-page="currentPage"
       :page-sizes="[5, 10, 20, 50]"
-      :page-size="5"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="tableData.length"
+      :page-size="pageSize"
+      layout="sizes, total, prev, pager, next, jumper"
+      :page-count="tablePageCount"
     >
     </el-pagination>
-    <el-dialog title="提示" :visible.sync="uploadDialog" width="30%">
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>
         <el-button type="primary" plain @click="handleGetStudentList"
           >查看班级名单</el-button
@@ -42,17 +48,18 @@
         >
       </span>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="uploadDialog = false">取 消</el-button>
-        <el-button type="primary" @click="uploadDialog = false"
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
         >
       </span>
     </el-dialog>
-  </el-main>
+  </div>
 </template>
 
 <script>
 export default {
+  components: {},
   data() {
     const header = [
       {
@@ -77,15 +84,15 @@ export default {
       }
     ];
     return {
+      loading: true,
       tableData: [],
       tableHeader: header,
+      tablePageCount: 1,
       currentPage: 1,
-      pagesize: 5,
+      pageSize: 5,
       dialogVisible: false,
       point: 60,
       currentRow: 0,
-      fileList: [],
-      uploadDialog: false,
       customColors: [
         { color: "#f56c6c", percentage: 60 },
         { color: "#e6a23c", percentage: 70 },
@@ -95,71 +102,64 @@ export default {
     };
   },
   methods: {
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed() {
-      this.$message.warning(`每次仅能上传一个文件`);
-    },
-    beforeRemove(file) {
-      return this.$confirm(`确定移除 ${file.name}？`);
+    handleDo(row) {
+      this.dialogVisible = true;
+      this.currentRow = row;
     },
     handleCurrentChange(val) {
       this.currentPage = val;
     },
     handleSizeChange(val) {
-      this.pagesize = val;
+      this.pageSize = val;
     },
-    handleGetNormalWorkTable() {
-      this.$router.push({
-        name: "NormalWorkInfoTable",
-        query: {
-          courseId: this.currentRow.courseId
-        }
-      });
-      this.uploadDialog = false;
-    },
-    handleGetStudentList() {
-      this.$router.push({
-        path: "/studentMain/StudentInfoTable",
-        query: {
-          courseId: this.currentRow.courseId
-        }
-      });
-      this.uploadDialog = false;
-    },
-    handleDo(row) {
+    setPoitPercent(row) {
       this.currentRow = row;
-      this.uploadDialog = true;
+      this.dialogVisible = true;
     },
     loadCourseInfoList() {
-      this.axios.get("course").then(response => {
-        console.log(response.data.data);
-        var data = response.data.data.courses;
-        data.forEach((element, index) => {
-          data[index].fw = element.finishCount + "/" + element.totalCount;
+      this.loading = true;
+      this.axios
+        .get("course", {
+          params: {
+            page: this.currentPage,
+            size: this.pageSize
+          }
+        })
+        .then(response => {
+          this.loading = false;
+          console.log(response.data.data);
+          let data = response.data.data["courses"];
+          data.forEach((element, index) => {
+            data[index].fw =
+              element["finishCount"] + "/" + element["totalCount"];
+          });
+          this.tableData = response.data.data["courses"];
+          this.tablePageCount = response.data.data["pageCount"];
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
         });
-        this.tableData = response.data.data.courses;
-      });
     }
   },
   created: function() {
     this.loadCourseInfoList();
+  },
+  watch: {
+    currentPage: function() {
+      this.loadCourseInfoList();
+    },
+    pageSize: function() {
+      this.loadCourseInfoList();
+    }
   }
 };
 </script>
 
 <style>
-.el-header {
-  background-color: #b3c0d1;
-  color: #333;
-  line-height: 60px;
-}
-
-.el-aside {
-  color: #333;
+.course-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

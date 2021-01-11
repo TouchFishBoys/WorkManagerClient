@@ -1,26 +1,7 @@
 <template>
-  <el-container>
-    <el-header style="color:#409EFF">
-      <el-row>
-        <el-col :span="8"
-          ><div class="grid-content bg-purple">
-            学生学号：{{ student.studentNum }}
-          </div></el-col
-        >
-        <el-col :span="8"
-          ><div class="grid-content bg-purple-light">
-            学生姓名：{{ student.studentName }}
-          </div></el-col
-        >
-        <el-col :span="8"
-          ><div class="grid-content bg-purple">
-            学生班级：{{ student.studentClass }}
-          </div></el-col
-        >
-      </el-row>
-    </el-header>
-    <el-main><course-info-table-stu></course-info-table-stu></el-main>
-  </el-container>
+  <div style="height: 100%">
+    <course-info-table-stu style="height: 100%"></course-info-table-stu>
+  </div>
 </template>
 <script>
 import courseInfoTableStu from "./CourseInfoTableStu.vue";
@@ -39,9 +20,12 @@ export default {
   methods: {
     loadData() {
       this.axios
-        .get(`student/${localStorage.getItem("USER_ID")}`)
+        .get(`student/${this.$store.getters["auth/userId"]}`)
         .then(response => {
-          this.student = response.data.data;
+          this.student = response.data;
+        })
+        .catch(error => {
+          console.log(error.data);
         });
     }
   },
