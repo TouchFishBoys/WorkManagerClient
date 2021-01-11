@@ -1,7 +1,14 @@
 <template>
   <div>
     <el-container>
-      <el-header></el-header>
+      <el-header>
+        <el-button
+          @click="logout"
+          icon="el-icon-switch-button"
+          type="danger"
+          circle
+        ></el-button>
+      </el-header>
       <el-container ref="homePage" class="view-container">
         <el-aside width="300px">
           <el-row>
@@ -84,7 +91,12 @@ export default {
       currentRow: 0
     };
   },
-  methods: {}
+  methods: {
+    logout: function() {
+      this.$router.push("/login");
+      this.$store.commit("auth/logout");
+    }
+  }
 };
 </script>
 <style scoped>

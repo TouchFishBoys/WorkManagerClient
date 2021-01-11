@@ -1,15 +1,17 @@
 <template>
   <div class="submit-container">
     <el-breadcrumb>
-      <el-breadcrumb-item :to="{ path: '/teacherMain/course' }"
+      <el-breadcrumb-item :to="{ path: '/teacherMain/courses' }"
         >课程列表</el-breadcrumb-item
       >
-      <el-breadcrumb-item :to="{ path: '/teacherMain/topics' }"
+      <el-breadcrumb-item
+        :to="{ path: '/teacherMain/topics', query: { courseId: courseId } }"
         >题目列表</el-breadcrumb-item
       >
       <el-breadcrumb-item>提交情况</el-breadcrumb-item>
     </el-breadcrumb>
     <el-table
+      border
       :data="tableData"
       height="700"
       v-loading="loading"
@@ -21,7 +23,7 @@
         :key="header.key"
         :property="header.key"
         :label="header.col"
-        width="140"
+        width="160"
       >
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
@@ -79,11 +81,12 @@ export default {
         address: "sad"
       },
       header = [
-        { col: "日期", key: "date" },
-        { col: "姓名", key: "name" },
+        { col: "日期", key: "timeUpload" },
+        { col: "姓名", key: "student.studentName" },
         { col: "地址", key: "address" }
       ];
     return {
+      courseId: this.$route.query.courseId,
       loading: true,
       tableData: Array(21).fill(item),
       tableHeader: header,
@@ -119,16 +122,46 @@ export default {
     },
     handleDownload(row) {
       console.log(row);
-      let studentId = 1;
-      this.axios.get(`topic/${studentId}/${this.$route.query.topicId}`, {
-        responseType: "blob"
-      });
+      let studentId = row.student.studentId;
+      this.axios
+        .get(`topic/${studentId}/${this.$route.query.topicId}`, {
+          responseType: "blob"
+        })
+        .then(response => {
+          var contentDisposition = response.headers["content-disposition"];
+          console.log(contentDisposition);
+          var patt = new RegExp("filename=([^;]+\\.[^\\.;]+);*");
+          var result = patt.exec(contentDisposition);
+
+          let blob = new Blob([response.data]);
+          let downloadElement = document.createElement("a");
+          let href = window.URL.createObjectURL(blob);
+
+          downloadElement.style.display = "none";
+          downloadElement.href = href;
+          downloadElement.download = decodeURI(result[1]);
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          document.body.removeChild(downloadElement);
+          window.URL.revokeObjectURL(href);
+        });
     },
     loadData() {
-      let studentId = 1;
       this.loading = true;
       this.axios
-        .post(`topic/${studentId}/${this.$route.query.topicId}/score`)
+        .get(`topic/${this.$route.query.topicId}/normal-work`)
+        .then(response => {
+          this.loading = false;
+          this.tableData = response.data.data;
+        })
+        .catch(error => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+    setScore(row) {
+      this.axios
+        .post(`topic/${row.studentId}/${this.$route.query.topicId}/score`)
         .then(response => {
           this.loading = false;
           console.log(response.data.data);

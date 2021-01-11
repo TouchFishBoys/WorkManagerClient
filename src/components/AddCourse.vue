@@ -19,13 +19,21 @@
           :file-list="fileList"
           :auto-upload="false"
         >
-          <el-button size="small" type="primary">上传</el-button>
+          <el-button type="primary">上传</el-button>
+          <el-button type="primary" @click="onSubmit">提交</el-button>
         </el-upload>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">提交</el-button>
-      </el-form-item>
     </el-form>
+
+    <el-table border height="400px">
+      <el-table-column
+        v-for="header in tableHeader"
+        :key="header.key"
+        :property="header.key"
+        :label="header.label"
+        v-show="showPreview"
+      ></el-table-column>
+    </el-table>
   </div>
 </template>
 
@@ -33,7 +41,23 @@
 export default {
   components: {},
   data() {
+    const tableHeader = [
+      {
+        label: "学号",
+        key: "studentNum"
+      },
+      {
+        label: "姓名",
+        key: "studentName"
+      },
+      {
+        label: "行政班",
+        key: "studentClass"
+      }
+    ];
     return {
+      tableHeader: tableHeader,
+      showPreview: true,
       course: {
         courseName: "",
         courseDescription: "",

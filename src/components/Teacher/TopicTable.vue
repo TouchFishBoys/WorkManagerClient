@@ -1,7 +1,7 @@
 <template>
   <div class="topic-container">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/teacherMain/course' }"
+      <el-breadcrumb-item :to="{ path: '/teacherMain/courses' }"
         >课程列表</el-breadcrumb-item
       >
       <el-breadcrumb-item>题目列表</el-breadcrumb-item>
@@ -114,9 +114,11 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     showSubmitStatus(row) {
+      let courseId = this.$route.query.courseId;
       this.$router.push({
-        path: "/teacherMain/normal-work",
+        path: "/teacherMain/normal-works",
         query: {
+          courseId: courseId,
           topicId: row.topicId
         }
       });

@@ -1,3 +1,4 @@
+import Login from "@/components/Login";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Upload from "@/components/Upload.vue";
@@ -12,6 +13,7 @@ import CourseInfoTableStu from "@/components/Student/CourseInfoTableStu";
 import NormalWorkInfoTable from "@/components/NormalWorkInfoTable";
 import StudentPersonal from "@/components/Student/StudentPersonal";
 import StudentInfoTable from "@/components/StudentInfoTable";
+import { Message } from "element-ui";
 import store from "@/store";
 
 Vue.use(VueRouter);
@@ -21,14 +23,14 @@ const routes = [
     path: "/",
     name: "Login",
     alias: "/Login",
-    component: () => import("../components/Login")
+    meta: {
+      requireAuth: false
+    },
+    component: Login
   },
   {
     path: "/teacherMain",
     name: "Main",
-    meta: {
-      requireAuth: true
-    },
     component: () => import("../views/TeacherMain.vue"),
     children: [
       {
@@ -57,22 +59,22 @@ const routes = [
         component: PointPersentGetter
       },
       {
-        path: "Personal",
+        path: "personal",
         name: "Personal",
         component: TeacherPersonal
       },
       {
-        path: "normal-work",
+        path: "normal-works",
         name: "DataTable",
         component: DataTable
       },
       {
-        path: "final-work",
+        path: "final-works",
         name: "FinalWork",
         component: DataTable
       },
       {
-        path: "AddCourse",
+        path: "add-course",
         name: "AddCourse",
         component: AddCourse
       },
@@ -94,9 +96,6 @@ const routes = [
   {
     path: "/studentMain",
     name: "StudentMain",
-    meta: {
-      requireAuth: true
-    },
     component: () => import("../views/StudentMain.vue"),
     children: [
       {
@@ -131,16 +130,20 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requireAuth) {
+  if (!to.meta.requireAuth) {
+    next();
+  } else {
     if (store.state.auth.token) {
       next();
     } else {
+      Message({
+        type: "info",
+        message: "您未登录，请登录"
+      });
       next({
-        path: "Login"
+        path: "/Login"
       });
     }
-  } else {
-    next();
   }
 });
 
