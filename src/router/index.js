@@ -13,6 +13,8 @@ import NormalWorkInfoTable from "@/components/NormalWorkInfoTable";
 import StudentPersonal from "@/components/Student/StudentPersonal";
 import StudentInfoTable from "@/components/StudentInfoTable";
 import store from "@/store";
+import StudentInfoTableTeacher from "@/components/Teacher/StudentInfoTableTeacher";
+import FinalWorkInfoTable from "@/components/Teacher/FinalWorkInfoTable";
 
 Vue.use(VueRouter);
 
@@ -31,6 +33,11 @@ const routes = [
     },
     component: () => import("../views/TeacherMain.vue"),
     children: [
+      {
+        path: "FinalWorkInfoTable",
+        name: "FinalWorkInfoTable",
+        component: FinalWorkInfoTable
+      },
       {
         path: "upload",
         name: "Upload",
@@ -70,6 +77,11 @@ const routes = [
         path: "final-work",
         name: "FinalWork",
         component: DataTable
+      },
+      {
+        path: "StudentInfoTableTeacher",
+        name: "StudentInfoTableTeacher",
+        component: StudentInfoTableTeacher
       },
       {
         path: "AddCourse",
