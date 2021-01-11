@@ -62,8 +62,13 @@ const routes = [
         component: TeacherPersonal
       },
       {
-        path: "DataTable",
+        path: "normal-work",
         name: "DataTable",
+        component: DataTable
+      },
+      {
+        path: "final-work",
+        name: "FinalWork",
         component: DataTable
       },
       {
