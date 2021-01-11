@@ -15,6 +15,8 @@ import StudentPersonal from "@/components/Student/StudentPersonal";
 import StudentInfoTable from "@/components/StudentInfoTable";
 import { Message } from "element-ui";
 import store from "@/store";
+import StudentInfoTableTeacher from "@/components/Teacher/StudentInfoTableTeacher";
+import FinalWorkInfoTable from "@/components/Teacher/FinalWorkInfoTable";
 
 Vue.use(VueRouter);
 
@@ -33,6 +35,11 @@ const routes = [
     name: "Main",
     component: () => import("../views/TeacherMain.vue"),
     children: [
+      {
+        path: "FinalWorkInfoTable",
+        name: "FinalWorkInfoTable",
+        component: FinalWorkInfoTable
+      },
       {
         path: "upload",
         name: "Upload",
@@ -72,6 +79,11 @@ const routes = [
         path: "final-works",
         name: "FinalWork",
         component: DataTable
+      },
+      {
+        path: "StudentInfoTableTeacher",
+        name: "StudentInfoTableTeacher",
+        component: StudentInfoTableTeacher
       },
       {
         path: "add-course",

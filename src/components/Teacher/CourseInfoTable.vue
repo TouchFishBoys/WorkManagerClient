@@ -19,13 +19,32 @@
         width="140"
       >
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" label="作业" width="100">
         <template slot-scope="scope">
-          <el-button @click="setPoitPercent(scope.row)" type="text" size="small"
-            >设置分数占比
-          </el-button>
           <el-button @click="showTopicList(scope.row)" type="text" size="small"
             >题目列表
+          </el-button>
+          <br />
+          <el-button
+            @click="showFinalWorkList(scope.row)"
+            type="text"
+            size="small"
+            >大作业列表
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="详情" width="100">
+        <template slot-scope="scope">
+          <el-button
+            @click="showStudentList(scope.row)"
+            type="text"
+            size="small"
+          >
+            学生列表
+          </el-button>
+          <br />
+          <el-button @click="setPoitPercent(scope.row)" type="text" size="small"
+            >导出成绩
           </el-button>
         </template>
       </el-table-column>
@@ -106,6 +125,22 @@ export default {
     };
   },
   methods: {
+    showFinalWorkList(row) {
+      this.$router.push({
+        path: "/teacherMain/FinalWorkInfoTable",
+        query: {
+          courseId: row.courseId
+        }
+      });
+    },
+    showStudentList(row) {
+      this.$router.push({
+        path: "/teacherMain/StudentInfoTableTeacher",
+        query: {
+          courseId: row.courseId
+        }
+      });
+    },
     showTopicList(row) {
       this.$router.push({
         path: "/teacherMain/topics",
