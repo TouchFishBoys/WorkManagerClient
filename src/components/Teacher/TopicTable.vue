@@ -115,7 +115,7 @@ export default {
     },
     showSubmitStatus(row) {
       this.$router.push({
-        path: "/teacherMain/DataTable",
+        path: "/teacherMain/normal-work",
         query: {
           topicId: row.topicId
         }

@@ -5,7 +5,10 @@
         <el-input v-model="course.courseName"></el-input>
       </el-form-item>
       <el-form-item label="课程描述">
-        <el-input v-model="course.courseDescription"></el-input>
+        <el-input type="textarea" v-model="course.courseDescription"></el-input>
+      </el-form-item>
+      <el-form-item label="默认密码">
+        <el-input v-model="course.defaultPassword"></el-input>
       </el-form-item>
       <el-form-item label="学生名单">
         <el-upload
@@ -33,7 +36,8 @@ export default {
     return {
       course: {
         courseName: "",
-        courseDescription: ""
+        courseDescription: "",
+        defaultPassword: "123456"
       },
       fileList: []
     };
@@ -58,6 +62,7 @@ export default {
       const formData = new FormData();
       formData.append("course_name", this.course.courseName);
       formData.append("course_description", this.course.courseDescription);
+      formData.append("default_password", this.course.defaultPassword);
       formData.append("excel", this.fileList[0].raw);
       this.axios.post("student", formData).then(response => {
         console.log(response.data);
