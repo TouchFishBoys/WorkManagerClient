@@ -68,28 +68,6 @@ export default {
         },
         {
           icon: "el-icon-document",
-          label: "作业详情",
-          index: "/DataTable",
-          children: [
-            {
-              icon: "el-icon-document",
-              label: "平时作业",
-              index: "/DataTable"
-            },
-            {
-              icon: "el-icon-document",
-              label: "大作业",
-              index: "/DataTable"
-            }
-          ]
-        },
-        {
-          icon: "el-icon-document",
-          label: "作业答辩",
-          index: "/QAtable"
-        },
-        {
-          icon: "el-icon-document",
           label: "新增课程",
           index: "/Addcourse"
         }
