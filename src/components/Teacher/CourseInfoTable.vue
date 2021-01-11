@@ -79,6 +79,10 @@ export default {
         key: "studentCount"
       },
       {
+        col: "任课老师",
+        key: "courseTeacherName"
+      },
+      {
         col: "大作业完成情况",
         key: "fw"
       }

@@ -14,7 +14,7 @@ const _axios = axiosOriginObj.create(defaultConfig);
 
 _axios.interceptors.request.use(
   config => {
-    if (store.state.auth.token) {
+    if (!config.url.includes("auth") && store.state.auth.token) {
       config.headers.Authorization = "Bearer " + store.state.auth.token;
     }
     return config;

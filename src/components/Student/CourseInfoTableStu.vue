@@ -79,6 +79,10 @@ export default {
         key: "studentCount"
       },
       {
+        col: "任课老师",
+        key: "courseTeacherName"
+      },
+      {
         col: "大作业完成情况",
         key: "fw"
       }
@@ -102,6 +106,22 @@ export default {
     };
   },
   methods: {
+    handleGetNormalWorkTable() {
+      this.$router.push({
+        path: "/studentMain/NormalWorkInfoTable",
+        query: {
+          courseId: this.currentRow.courseId
+        }
+      });
+    },
+    handleGetStudentList() {
+      this.$router.push({
+        path: "/studentMain/StudentInfoTable",
+        query: {
+          courseId: this.currentRow.courseId
+        }
+      });
+    },
     handleDo(row) {
       this.dialogVisible = true;
       this.currentRow = row;

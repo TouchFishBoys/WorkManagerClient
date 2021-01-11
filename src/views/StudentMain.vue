@@ -87,3 +87,11 @@ export default {
   methods: {}
 };
 </script>
+<style scoped>
+.main-container {
+  width: 100%;
+}
+.view-container {
+  height: calc(100vh - 60px);
+}
+</style>
