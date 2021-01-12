@@ -1,7 +1,14 @@
 <template>
   <div>
     <el-container>
-      <el-header></el-header>
+      <el-header>
+        <el-button
+          @click="logout"
+          icon="el-icon-switch-button"
+          type="danger"
+          circle
+        ></el-button>
+      </el-header>
       <el-container ref="homePage" class="view-container">
         <el-aside width="300px">
           <el-row>
@@ -69,7 +76,7 @@ export default {
         {
           icon: "el-icon-document",
           label: "新增课程",
-          index: "/Addcourse"
+          index: "/add-course"
         }
       ],
       defaultProps: {
@@ -77,6 +84,12 @@ export default {
         label: "label"
       }
     };
+  },
+  methods: {
+    logout: function() {
+      this.$router.push("/");
+      this.$store.commit("auth/logout");
+    }
   }
 };
 </script>

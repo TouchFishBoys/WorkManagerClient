@@ -31,19 +31,31 @@ _axios.interceptors.response.use(
   error => {
     if (error && error.response) {
       console.log(error.response);
-      switch (error.response.status) {
-        case 401:
-          store.commit("auth/logout");
-          router.replace({ path: "login" });
-          break;
-        case 403:
-          Message({
-            type: "error",
-            message: "登录状态已过期"
-          });
-          localStorage.removeItem(store.state.auth.token_keyname);
-          router.replace({ path: "login" });
-          break;
+      if (error.response.data.message) {
+        Message({
+          type: "error",
+          message: error.response.data.message
+        });
+      } else {
+        switch (error.response.status) {
+          case 401:
+            store.commit("auth/logout");
+            router.replace({ path: "login" });
+            break;
+          case 403:
+            Message({
+              type: "error",
+              message: "登录状态已过期"
+            });
+            localStorage.removeItem(store.state.auth.token_keyname);
+            router.replace({ path: "/login" });
+            break;
+          case 404:
+            Message({
+              type: "error",
+              message: "请求的资源不存在"
+            });
+        }
       }
     } else {
       if (JSON.stringify(error).includes("timeout")) {

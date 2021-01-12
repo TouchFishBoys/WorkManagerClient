@@ -24,9 +24,7 @@
             <el-radio label="ROLE_STUDENT">学生</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="doLogin">登录</el-button>
-        </el-form-item>
+        <el-button type="primary" @click="doLogin" round>登录</el-button>
       </el-form>
     </el-card>
   </div>

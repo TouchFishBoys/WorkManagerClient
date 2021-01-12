@@ -55,7 +55,7 @@
           :before-remove="beforeRemove"
           :on-exceed="handleExceed"
           :file-list="fileList"
-          accept=".war"
+          accept=".zip"
         >
           <el-button size="small" type="primary">点击上传</el-button>
         </el-upload>
@@ -152,16 +152,18 @@ export default {
       form.append("file", fileObj.file);
       var notifi = this.$notify({
         type: "info",
-        message: "uploading"
+        message: "uploading",
+        duration: 0
       });
       this.axios
-        .post(`${this.currentRow.topicId}`, form, {
+        .post(`/topic/${this.currentRow.topicId}/file`, form, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
         })
         .then(() => {
           notifi.close();
+          this.dialogVisible = false;
           this.$notify({
             type: "success",
             message: "上传成功"
