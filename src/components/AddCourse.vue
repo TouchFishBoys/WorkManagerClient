@@ -25,15 +25,19 @@
       </el-form-item>
     </el-form>
 
-    <el-table border height="400px">
-      <el-table-column
-        v-for="header in tableHeader"
-        :key="header.key"
-        :property="header.key"
-        :label="header.label"
-        v-show="showPreview"
-      ></el-table-column>
-    </el-table>
+    <el-collapse>
+      <el-collapse-item title="预览">
+        <el-table border height="400px">
+          <el-table-column
+            v-for="header in tableHeader"
+            :key="header.key"
+            :property="header.key"
+            :label="header.label"
+            v-show="showPreview"
+          />
+        </el-table>
+      </el-collapse-item>
+    </el-collapse>
   </div>
 </template>
 

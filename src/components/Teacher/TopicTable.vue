@@ -1,5 +1,5 @@
 <template>
-  <div class="topic-container">
+  <div style="display: flex;  flex-direction: column;  height: 100%;">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/teacherMain/courses' }"
         >课程列表</el-breadcrumb-item
@@ -13,6 +13,8 @@
       v-loading="loading"
       element-loading-text="少女折寿中"
       element-loading-background="rgba(0, 0, 0, 0.4)"
+      height="500px"
+      border
     >
       <el-table-column
         v-for="header in tableHeader"
@@ -144,7 +146,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .topic-container {
   display: flex;
   flex-direction: column;

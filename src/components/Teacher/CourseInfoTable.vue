@@ -49,7 +49,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -60,6 +59,7 @@
       :page-count="tablePageCount"
     >
     </el-pagination>
+
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>
         <PointPercentGetter></PointPercentGetter>
@@ -199,7 +199,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .course-container {
   display: flex;
   flex-direction: column;

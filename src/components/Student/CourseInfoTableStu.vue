@@ -22,7 +22,7 @@
       <el-table-column fixed="right" label="大作业" width="100">
         <template slot-scope="scope">
           <el-button @click="handleJoinTeam(scope.row)" type="text" size="small"
-            >加入小组</el-button
+            >小组列表</el-button
           >
           <br />
           <el-button @click="handleDo(scope.row)" type="text" size="small"

@@ -6,6 +6,11 @@
       >
       <el-breadcrumb-item>小组列表</el-breadcrumb-item>
     </el-breadcrumb>
+    <div style="margin-top: 5px; margin-bottom: 5px">
+      <el-button style="left:5px; float:left" @click="createTeam" type="primary"
+        >创建队伍</el-button
+      >
+    </div>
     <el-table
       element-loading-text="少女折寿中"
       element-loading-background="rgba(0, 0, 0, 0.4)"
@@ -19,7 +24,7 @@
         :key="header.key"
         :property="header.key"
         :label="header.col"
-        width="140"
+        width="180"
       >
       </el-table-column>
       <el-table-column label="选项" width="100">
@@ -48,6 +53,17 @@
         <el-button type="primary" @click="readyJoin">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="提示" :visible.sync="createDialogVisible" width="30%">
+      <el-form>
+        <el-form-item label="队伍名">
+          <el-input v-model="createdTeamName"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form slot="footer" class="dialog-footer">
+        <el-button @click="createDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="createTeam">确 定</el-button>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -61,12 +77,12 @@ export default {
         key: "teamName"
       },
       {
-        col: "人数",
-        key: "memberCount"
-      },
-      {
         col: "成员",
         key: "students"
+      },
+      {
+        col: "人数",
+        key: "memberCount"
       }
     ];
     return {
@@ -77,6 +93,7 @@ export default {
       currentPage: 1,
       pageSize: 5,
       dialogVisible: false,
+      createDialogVisible: false,
       point: 60,
       courseId: 0,
       students: [],
@@ -86,7 +103,8 @@ export default {
         { color: "#e6a23c", percentage: 70 },
         { color: "#5cb87a", percentage: 90 },
         { color: "#1989fa", percentage: 80 }
-      ]
+      ],
+      createdTeamName: ""
     };
   },
   methods: {
@@ -94,9 +112,10 @@ export default {
       this.axios
         .patch(`team/${this.courseId}/${this.currentRow.teamId}`)
         .then(response => {
-          if (response.data.data.message == "success") {
+          if (response.data) {
             this.$notify.success("成功加入队伍！");
             this.dialogVisible = false;
+            this.loadData();
           }
         })
         .catch(() => {
@@ -139,6 +158,25 @@ export default {
           this.tablePageCount = response.data.data["pageCount"];
           console.log(response.data.data);
         });
+    },
+    createTeam() {
+      if (this.createDialogVisible) {
+        this.axios
+          .post(`/team/${this.courseId}`, { value: this.createdTeamName })
+          .then(response => {
+            if (response.data) {
+              this.createDialogVisible = false;
+              this.loadData();
+              this.$notify({
+                type: "success",
+                message: "创建成功"
+              });
+            }
+          });
+      } else {
+        this.createdTeamName = "";
+        this.createDialogVisible = true;
+      }
     }
   },
   created: function() {
