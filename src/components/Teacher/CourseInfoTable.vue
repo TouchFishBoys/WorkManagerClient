@@ -5,7 +5,7 @@
     </el-breadcrumb>
     <el-table
       element-loading-text="少女折寿中"
-      element-loading-background="rgba(0, 0, 0, 0.4)"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
       :data="tableData"
       v-loading="loading"
       height="550px"
@@ -102,7 +102,7 @@ export default {
         key: "courseTeacherName"
       },
       {
-        col: "大作业完成情况",
+        col: "提交队伍/队伍总数",
         key: "fw"
       }
     ];

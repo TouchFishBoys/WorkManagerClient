@@ -12,14 +12,14 @@
       "
       v-loading="loading"
       element-loading-text="少女折寿中"
-      element-loading-background="rgba(0, 0, 0, 0.4)"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
     >
       <el-table-column
         v-for="header in tableHeader"
         :key="header.key"
         :property="header.key"
         :label="header.col"
-        width="140"
+        width="170"
       >
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
@@ -90,7 +90,7 @@ export default {
         key: "finishTime"
       },
       {
-        col: "完成情况",
+        col: "提交人数/总人数",
         key: "finishedInfo"
       }
     ];

@@ -12,22 +12,25 @@
       </el-form-item>
       <el-form-item label="学生名单">
         <el-upload
+          :show-file-list="false"
+          :http-request="onUploadPreview"
+          accept=".xlsx"
           :on-change="changeFile"
           action=""
           :multiple="false"
           :on-exceed="handleExceed"
           :file-list="fileList"
-          :auto-upload="false"
         >
-          <el-button type="primary">上传</el-button>
-          <el-button type="primary" @click="onSubmit">提交</el-button>
+          <el-button type="primary">选择文件</el-button>
+          <div slot="tip" class="el-upload__tip">请上传图片格式文件</div>
         </el-upload>
+        <el-button type="primary" @click="onSubmit">提交</el-button>
       </el-form-item>
     </el-form>
 
     <el-collapse>
       <el-collapse-item title="预览">
-        <el-table border height="400px">
+        <el-table border height="400px" :data="tableData" v-loading="loading">
           <el-table-column
             v-for="header in tableHeader"
             :key="header.key"
@@ -60,6 +63,8 @@ export default {
       }
     ];
     return {
+      loading: false,
+      tableData: [],
       tableHeader: tableHeader,
       showPreview: true,
       course: {
@@ -71,6 +76,26 @@ export default {
     };
   },
   methods: {
+    onUploadPreview(val) {
+      this.loading = true;
+      this.tableData = [];
+      console.log(val);
+      let formData = new FormData();
+      formData.append("file", val.file);
+      this.axios
+        .post("/student/preview", formData)
+        .then(response => {
+          this.tableData = response.data.data;
+          this.loading = false;
+        })
+        .catch(() => {
+          this.$notify({
+            type: "error",
+            message: "加载预览失败"
+          });
+          this.loading = false;
+        });
+    },
     handleRemove(file, fileList) {
       console.log(file, fileList);
     },

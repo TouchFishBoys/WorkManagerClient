@@ -8,7 +8,7 @@
     </el-breadcrumb>
     <div style="margin-top: 5px; margin-bottom: 5px">
       <el-button style="left:5px; float:left" @click="createTeam" type="primary"
-        >创建队伍</el-button
+        >创建小组</el-button
       >
     </div>
     <el-table

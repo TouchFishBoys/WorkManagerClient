@@ -8,9 +8,15 @@ import "element-ui/lib/theme-chalk/index.css";
 import VueAxios from "vue-axios";
 import axios from "./axios";
 
+import MyTable from "@/components/MyTable";
+
+ElementUI.Dialog.props.closeOnClickModal.default = false;
+ElementUI.Table.props.border.default = true;
+console.info(ElementUI.Table);
 Vue.use(ElementUI);
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
+Vue.component(MyTable);
 
 new Vue({
   router,

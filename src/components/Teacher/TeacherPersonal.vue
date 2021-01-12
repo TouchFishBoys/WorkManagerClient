@@ -1,13 +1,13 @@
 <template>
   <div style="height: 100%">
-    <course-info-table style="height: 100%"></course-info-table>
+    <CourseInfoTable style="height: 100%"></CourseInfoTable>
   </div>
 </template>
 <script>
-import courseInfoTable from "./CourseInfoTable.vue";
+import CourseInfoTable from "./CourseInfoTable.vue";
 
 export default {
-  components: { courseInfoTable },
+  components: { CourseInfoTable },
   data() {
     return {
       teacher: {

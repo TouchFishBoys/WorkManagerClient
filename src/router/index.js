@@ -1,14 +1,13 @@
 import Login from "@/components/Login";
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Upload from "@/components/Upload.vue";
 import FileList from "@/components/FileList.vue";
-import QAtable from "@/components/QAtable.vue";
+import QAtable from "@/components/Teacher/QAtable.vue";
 import Menu from "@/components/Menu.vue";
 import PointPersentGetter from "@/components/PointPercentGetter";
 import TeacherPersonal from "@/components/Teacher/TeacherPersonal";
 import DataTable from "@/components/Teacher/SubmitStatusTable";
-import AddCourse from "@/components/AddCourse";
+import AddCourse from "@/components/Teacher/AddCourse";
 import CourseInfoTableStu from "@/components/Student/CourseInfoTableStu";
 import NormalWorkInfoTable from "@/components/NormalWorkInfoTable";
 import StudentPersonal from "@/components/Student/StudentPersonal";
@@ -40,11 +39,6 @@ const routes = [
         path: "FinalWorkInfoTable",
         name: "FinalWorkInfoTable",
         component: FinalWorkInfoTable
-      },
-      {
-        path: "upload",
-        name: "Upload",
-        component: Upload
       },
       {
         path: "filelist",
