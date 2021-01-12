@@ -19,10 +19,31 @@
         width="140"
       >
       </el-table-column>
-      <el-table-column fixed="right" label="其他" width="200">
+      <el-table-column fixed="right" label="大作业" width="100">
         <template slot-scope="scope">
+          <el-button @click="handleJoinTeam(scope.row)" type="text" size="small"
+            >加入小组</el-button
+          >
+          <br />
           <el-button @click="handleDo(scope.row)" type="text" size="small"
-            >更多操作</el-button
+            >交大作业</el-button
+          >
+        </template>
+      </el-table-column>
+      <el-table-column fixed="right" label="其他" width="100">
+        <template slot-scope="scope">
+          <el-button
+            @click="handleGetStudentList(scope.row)"
+            type="text"
+            size="small"
+            >学生列表</el-button
+          >
+          <br />
+          <el-button
+            @click="handleGetNormalWorkTable(scope.row)"
+            type="text"
+            size="small"
+            >题目列表</el-button
           >
         </template>
       </el-table-column>
@@ -38,22 +59,6 @@
       :page-count="tablePageCount"
     >
     </el-pagination>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-      <span>
-        <el-button type="primary" plain @click="handleGetStudentList"
-          >查看班级名单</el-button
-        >
-        <el-button type="primary" plain @click="handleGetNormalWorkTable"
-          >查看课程作业</el-button
-        >
-      </span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -106,25 +111,29 @@ export default {
     };
   },
   methods: {
-    handleGetNormalWorkTable() {
+    handleJoinTeam(row) {
+      this.$router.push({
+        path: "/studentMain/TeamInfoTable",
+        query: {
+          courseId: row.courseId
+        }
+      });
+    },
+    handleGetNormalWorkTable(row) {
       this.$router.push({
         path: "/studentMain/NormalWorkInfoTable",
         query: {
-          courseId: this.currentRow.courseId
+          courseId: row.courseId
         }
       });
     },
-    handleGetStudentList() {
+    handleGetStudentList(row) {
       this.$router.push({
         path: "/studentMain/StudentInfoTable",
         query: {
-          courseId: this.currentRow.courseId
+          courseId: row.courseId
         }
       });
-    },
-    handleDo(row) {
-      this.dialogVisible = true;
-      this.currentRow = row;
     },
     handleCurrentChange(val) {
       this.currentPage = val;

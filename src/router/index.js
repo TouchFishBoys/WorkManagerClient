@@ -15,6 +15,7 @@ import StudentInfoTable from "@/components/StudentInfoTable";
 import store from "@/store";
 import StudentInfoTableTeacher from "@/components/Teacher/StudentInfoTableTeacher";
 import FinalWorkInfoTable from "@/components/Teacher/FinalWorkInfoTable";
+import TeamInfoTable from "@/components/Student/TeamInfoTable";
 
 Vue.use(VueRouter);
 
@@ -111,6 +112,11 @@ const routes = [
     },
     component: () => import("../views/StudentMain.vue"),
     children: [
+      {
+        path: "TeamInfoTable",
+        name: "TeamInfoTable",
+        component: TeamInfoTable
+      },
       {
         path: "courses",
         name: "CourseStu",

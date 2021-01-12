@@ -42,14 +42,14 @@
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button
-            @click="handleScoreDocument(scope.row)"
+            @click="handlePointDocument(scope.row)"
             type="text"
             size="small"
             >文档评分</el-button
           >
           <br />
           <el-button
-            @click="handleScoreDocument(scope.row)"
+            @click="handlePointFile(scope.row)"
             type="text"
             size="small"
             >作业评分</el-button
@@ -68,27 +68,23 @@
       :total="tableData.length"
     >
     </el-pagination>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="评分" :visible.sync="dialogVisible" width="30%">
       <span>
-        <el-upload
-          class="upload-demo"
-          action
-          :http-request="uploadFile"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          :on-exceed="handleExceed"
-          :file-list="fileList"
-          accept=".war"
-        >
-          <el-button size="small" type="primary">点击上传</el-button>
-        </el-upload>
+        <el-progress
+          type="circle"
+          :percentage="point"
+          :color="customColors"
+        ></el-progress>
+        <el-input-number
+          v-model="point"
+          :min="0"
+          :max="100"
+          label="分数"
+        ></el-input-number>
       </span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="pointSubmit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -117,14 +113,20 @@ export default {
       {
         col: "提交时间",
         key: "submitTime"
+      },
+      {
+        col: "大作业成绩/文档成绩",
+        key: "score"
       }
     ];
     return {
+      loading: true,
       tableData: [],
       tableHeader: header,
       currentPage: 1,
       pagesize: 5,
       authors: [],
+      state: 0, //0为文档，1为文件
       dialogVisible: false,
       point: 60,
       currentRow: 0,
@@ -138,6 +140,56 @@ export default {
     };
   },
   methods: {
+    successPoint() {
+      this.$notify.success("评分成功");
+      this.dialogVisible = false;
+      this.loadData();
+    },
+    handlePointDocument(row) {
+      this.currentRow = row;
+      this.state = 0;
+      this.dialogVisible = true;
+    },
+    handlePointFile(row) {
+      this.currentRow = row;
+      this.state = 1;
+      this.dialogVisible = true;
+    },
+    pointSubmit() {
+      if (this.state == 0) {
+        this.axios
+          .post(`/final/${this.currentRow.finalWorkId}/document/score`, {
+            value: this.point
+          })
+          .then(response => {
+            console.log(response.data);
+            if (response.data.result == "success") {
+              this.successPoint();
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.$notify.error("请勿重复评分！");
+            this.dialogVisible = false;
+          });
+      } else {
+        this.axios
+          .post(`/final/${this.currentRow.finalWorkId}/score`, {
+            value: this.point
+          })
+          .then(response => {
+            console.log(response.data);
+            if (response.data.result == "success") {
+              this.successPoint();
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            this.$notify.error("请勿重复评分！");
+            this.dialogVisible = false;
+          });
+      }
+    },
     handleCurrentChange(val) {
       this.currentPage = val;
     },
@@ -161,12 +213,14 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     loadData() {
+      this.loading = true;
       this.axios
         .get(`/course/${this.$route.query.courseId}/final-work?finished=true`)
         .then(response => {
           console.log(response.data.data);
           this.tableData = response.data.data;
           this.tableData.forEach((item, index) => {
+            item["score"] = item.score + "/" + item.documentScore;
             this.authors = item.authors;
             this.tableData[index].authors = this.authors[0];
             if (this.authors[1]) {
@@ -177,6 +231,7 @@ export default {
               this.tableData[index].authors =
                 this.tableData[index].authors + "，" + this.authors[2];
             }
+            this.loading = false;
           });
         });
     },
