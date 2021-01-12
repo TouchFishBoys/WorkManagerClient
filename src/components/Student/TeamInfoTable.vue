@@ -118,10 +118,15 @@ export default {
             this.loadData();
           }
         })
-        .catch(() => {
-          this.$notify.error("加入失败");
-          this.dialogVisible = false;
+        .catch(error => {
+          if (error.response.status == 409) {
+            this.$notify.error("你已拥有队伍");
+          } else {
+            this.$notify.error("加入失败");
+            this.dialogVisible = false;
+          }
         });
+      this.dialogVisible = false;
     },
     handleJoin(row) {
       if (row.memberCount == "3/3") {
